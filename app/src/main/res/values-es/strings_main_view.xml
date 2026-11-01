@@ -4,7 +4,7 @@
     <!-- COMPONENT STRINGS -->
     <string name="main_view_today">Hoy</string>
     <string name="main_view_humidity">Humedad</string>
-    <string name="main_view_wind_speed">Velocidad del viento</string>
+    <string name="main_view_wind_speed">Viento</string>
     <string name="main_view_pressure">Presión</string>
 
     <!-- WEATHER TYPE CODE DESCRIPTIONS -->

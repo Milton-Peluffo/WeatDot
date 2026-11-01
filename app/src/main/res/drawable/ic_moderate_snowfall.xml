@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 73 · Moderate snowfall · Nevada moderada -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M6.6,13.3L16.86,13.3A4.14,4.14 0 1 0 16.05,5.1A5.04,5.04 0 0 0 6.81,6.11A3.6,3.6 0 1 0 6.6,13.3Z"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M9.4,17.2L9.4,21.2M7.67,18.2L11.13,20.2M11.13,18.2L7.67,20.2M14.6,17.2L14.6,21.2M12.87,18.2L16.33,20.2M16.33,18.2L12.87,20.2"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

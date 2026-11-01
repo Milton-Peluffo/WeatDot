@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -19,6 +20,7 @@ object Texts {
         modifier: Modifier = Modifier,
         text: String,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         color: Color = Color.Unspecified,
         textAlign: TextAlign = TextAlign.Start
@@ -29,6 +31,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign
         )
@@ -110,6 +113,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start
@@ -120,6 +124,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign,
             alpha = if (isSecondary) Alpha.AlphaHigh else Alpha.AlphaFull
@@ -132,6 +137,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start
@@ -142,6 +148,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign,
             alpha = if (isSecondary) Alpha.AlphaMedium else Alpha.AlphaFull
@@ -154,6 +161,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start
@@ -164,6 +172,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign,
             alpha = if (isSecondary) Alpha.AlphaHigh else Alpha.AlphaFull
@@ -176,6 +185,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start
@@ -186,6 +196,7 @@ object Texts {
             style = MaterialTheme.typography.labelLarge,
             color = color,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign,
             alpha = if (isSecondary) Alpha.AlphaHigh else Alpha.AlphaFull
@@ -257,6 +268,7 @@ private fun AppText(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
     overrideStyle: TextStyle? = null,
     textAlign: TextAlign? = null,
     maxLines: Int = Int.MAX_VALUE,
@@ -276,6 +288,7 @@ private fun AppText(
         } else {
             color
         },
+        fontFamily = fontFamily,
         modifier = modifier,
         textAlign = textAlign,
         maxLines = maxLines,

@@ -1,6 +1,7 @@
 package com.tomildev.weathy.core.domain.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import com.tomildev.weathy.R
 import com.tomildev.weathy.ui.theme.WeathyDrawables
@@ -8,7 +9,7 @@ import com.tomildev.weathy.ui.theme.WeathyDrawables
 sealed class WeatherType(
     @StringRes val weatherDescRes: Int,
     @DrawableRes val iconRes: Int,
-    @DrawableRes val backgroundRes: Int
+    @RawRes val backgroundRes: Int
 ) {
     object ClearSky : WeatherType(
         weatherDescRes = R.string.weather_code_description_clear_sky,

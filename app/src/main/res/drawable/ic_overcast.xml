@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 3 · Overcast · Nublado / Cubierto -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M20.87,11.31A3.59,3.59 0 0 0 18.11,4.85A4.37,4.37 0 0 0 10.1,5.73A3.12,3.12 0 0 0 6.94,7.92"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M5.68,20.64L16.17,20.64A4.23,4.23 0 1 0 15.34,12.26A5.15,5.15 0 0 0 5.89,13.29A3.68,3.68 0 1 0 5.68,20.64Z"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

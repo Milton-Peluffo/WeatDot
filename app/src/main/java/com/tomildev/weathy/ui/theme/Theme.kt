@@ -56,7 +56,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun WeathyTheme(
     //darkTheme: Boolean = isSystemInDarkTheme(),
-    darkTheme: Boolean = false,
+    darkTheme: Boolean = true,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {

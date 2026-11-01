@@ -40,6 +40,9 @@ android {
 
 dependencies {
 
+    //LOTTIE
+    implementation(libs.lottie.compose)
+
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
