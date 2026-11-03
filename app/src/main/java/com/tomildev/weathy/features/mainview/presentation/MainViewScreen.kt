@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,13 +33,16 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.tomildev.weathy.R
-import com.tomildev.weathy.core.presentation.components.cards.InformationCard
 import com.tomildev.weathy.core.presentation.components.scaffolds.AppScaffold
 import com.tomildev.weathy.core.presentation.components.spacers.HorizontalSpacer
 import com.tomildev.weathy.core.presentation.components.spacers.VerticalSpacer
+import com.tomildev.weathy.core.presentation.components.texts.SectionText
 import com.tomildev.weathy.core.presentation.components.texts.Texts
 import com.tomildev.weathy.core.presentation.components.topbars.AppTopBars
+import com.tomildev.weathy.core.util.TimeFormatter
 import com.tomildev.weathy.features.mainview.presentation.components.WeatherDataContainer
+import com.tomildev.weathy.features.mainview.presentation.components.cards.HourlyWeatherCard
+import com.tomildev.weathy.features.mainview.presentation.components.cards.InformationCard
 import com.tomildev.weathy.ui.theme.Dimens
 import com.tomildev.weathy.ui.theme.NDotFontFamily
 import com.tomildev.weathy.ui.theme.WeathyDrawables
@@ -50,7 +56,9 @@ fun MainViewScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val currentWeather = uiState.weatherInfo?.currentWeather
     val weatherType = currentWeather?.weatherType
-
+    val context = LocalContext.current
+    val systemFormat = TimeFormatter.getSystemTimeFormat(context)
+    val scrollState = rememberScrollState()
     AppScaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -60,6 +68,7 @@ fun MainViewScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(innerPadding)
                 .padding(horizontal = Dimens.ScreenHorizontalPadding)
         ) {
@@ -89,12 +98,6 @@ fun MainViewScreen(
                         fontFamily = NDotFontFamily
                     )
                 }
-//                VerticalSpacer(Dimens.SpacingSmall)
-//                Texts.Body(
-//                    text = stringResource(R.string.main_view_today),
-//                    color = Color.White,
-//                    isSecondary = true
-//                )
             }
             VerticalSpacer(Dimens.SpacingSmall)
             Box(contentAlignment = Alignment.Center) {
@@ -102,9 +105,6 @@ fun MainViewScreen(
                     modifier = Modifier.zIndex(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-//                    val backgroundRes =
-//                        WeathyDrawables.Backgrounds.Thunderstorm
-
                     val backgroundRes =
                         weatherType?.backgroundRes ?: WeathyDrawables.Backgrounds.Thunderstorm
                     val lottieComposition by rememberLottieComposition(
@@ -116,35 +116,27 @@ fun MainViewScreen(
                         iterations = LottieConstants.IterateForever,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(1.2f)
+                            .aspectRatio(1.3f)
                     )
-                    VerticalSpacer(Dimens.SpacingSmall)
-                    Card(
-                        modifier = Modifier,
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer
-                        ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    VerticalSpacer(Dimens.SpacingTiny)
+                    Row(
+                        modifier = Modifier.padding(horizontal = 15.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                modifier = Modifier
-                                    .padding(end = Dimens.SpacingTiny)
-                                    .size(Dimens.IconSizeNormal),
-                                painter = painterResource(
-                                    weatherType?.iconRes ?: WeathyDrawables.Icons.ClearSky
-                                ),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
-                            Texts.Body(
-                                text = weatherType?.let { stringResource(it.weatherDescRes) }
-                                    ?: "Empty",
-                            )
-                        }
+                        Icon(
+                            modifier = Modifier
+                                .padding(end = Dimens.SpacingTiny)
+                                .size(Dimens.IconSizeNormal),
+                            painter = painterResource(
+                                weatherType?.iconRes ?: WeathyDrawables.Icons.ClearSky
+                            ),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                        Texts.Body(
+                            text = weatherType?.let { stringResource(it.weatherDescRes) }
+                                ?: "Empty",
+                        )
                     }
                 }
             }
@@ -152,26 +144,40 @@ fun MainViewScreen(
             WeatherDataContainer {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     InformationCard(
-                        icon = WeathyDrawables.Icons.WaterDroplet,
                         data = "${currentWeather?.humidity?.toInt()}",
                         dataUnits = "%",
                         dataDescription = stringResource(R.string.main_view_humidity)
                     )
                     InformationCard(
-                        icon = WeathyDrawables.Icons.Wind,
                         data = "${currentWeather?.windSpeed?.toString()}",
                         dataUnits = "km/h",
                         dataDescription = stringResource(R.string.main_view_wind_speed)
                     )
                     InformationCard(
-                        icon = WeathyDrawables.Icons.Pressure,
                         data = "${currentWeather?.pressure?.toInt()}",
                         dataUnits = "hPa",
                         dataDescription = stringResource(R.string.main_view_pressure)
                     )
+                }
+                SectionText(text = "Pronostico de hoy")
+                val hourlyForecast = uiState.weatherInfo?.hourlyForecast ?: emptyList()
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
+                ) {
+                    items(hourlyForecast) { hourlyItem ->
+                        val formattedTime =
+                            TimeFormatter.formatHour(hourlyItem.time, systemFormat)
+                        HourlyWeatherCard(
+                            hour = formattedTime.hour,
+                            period = formattedTime.period,
+                            temperature = "${hourlyItem.temperature.toInt()}°",
+                            icon = hourlyItem.weatherType.iconRes
+                        )
+                    }
                 }
             }
         }

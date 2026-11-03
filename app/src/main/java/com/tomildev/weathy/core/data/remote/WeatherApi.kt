@@ -12,5 +12,6 @@ interface WeatherApi {
         @Query("current") current: String = ApiConstants.DEFAULT_CURRENT,
         @Query("hourly") hourly: String = ApiConstants.DEFAULT_HOURLY,
         @Query("daily") daily: String = ApiConstants.DEFAULT_DAILY,
+        @Query("timezone") timezone: String = ApiConstants.DEFAULT_TIMEZONE
     ): WeatherResponseDto
 }
