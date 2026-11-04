@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -47,6 +46,7 @@ import com.tomildev.weathy.features.mainview.presentation.components.cards.Hourl
 import com.tomildev.weathy.features.mainview.presentation.components.cards.InformationCard
 import com.tomildev.weathy.ui.theme.Dimens
 import com.tomildev.weathy.ui.theme.NDotFontFamily
+import com.tomildev.weathy.ui.theme.TechMonoFontFamily
 import com.tomildev.weathy.ui.theme.WeathyDrawables
 
 @Composable
@@ -111,7 +111,7 @@ fun MainViewScreen(
                     )
                 }
 
-                SectionText(text = "Pronostico de hoy")
+                SectionText(text = stringResource(R.string.main_view_today_forecast))
                 val hourlyForecast = uiState.weatherInfo?.hourlyForecast ?: emptyList()
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -129,15 +129,21 @@ fun MainViewScreen(
                     }
                 }
 
-                SectionText(text = "Pronóstico de 7 días")
+                SectionText(text = stringResource(R.string.main_view_seven_days_forecast))
                 val dailyForecast = uiState.weatherInfo?.dailyForecast ?: emptyList()
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
                 ) {
                     dailyForecast.forEach { dailyItem ->
+                        val dayNameText = if (dailyItem.isToday) {
+                            stringResource(R.string.main_view_today_day, dailyItem.dayName)
+                        } else {
+                            dailyItem.dayName
+                        }
+
                         DailyWeatherItemCard(
-                            dayName = dailyItem.dayName,
+                            dayName = dayNameText,
                             icon = dailyItem.weatherType.iconRes,
                             minTemperature = "${dailyItem.minTemperature.toInt()}°",
                             maxTemperature = "${dailyItem.maxTemperature.toInt()}°"
@@ -161,8 +167,14 @@ private fun MainViewHeader(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Texts.TitleMedium(text = uiState.cityName)
-        Texts.Body(text = uiState.countryName, isSecondary = true)
+        Texts.TitleLarge(
+            text = uiState.cityName, fontFamily = TechMonoFontFamily,
+        )
+        Texts.TitleSmall(
+            text = uiState.countryName,
+            isSecondary = true,
+            fontFamily = TechMonoFontFamily
+        )
         VerticalSpacer(Dimens.SpacingLarge)
 
         Row(
@@ -178,7 +190,7 @@ private fun MainViewHeader(
             HorizontalSpacer(Dimens.SpacingSmall)
             Texts.Headline(
                 text = "°C",
-                color = Color(0xFFff2a2a),
+                color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Normal,
                 fontFamily = NDotFontFamily
             )
@@ -224,6 +236,7 @@ private fun MainViewHeader(
                     Texts.Body(
                         text = weatherType?.let { stringResource(it.weatherDescRes) }
                             ?: "Empty",
+                        fontFamily = TechMonoFontFamily
                     )
                 }
             }

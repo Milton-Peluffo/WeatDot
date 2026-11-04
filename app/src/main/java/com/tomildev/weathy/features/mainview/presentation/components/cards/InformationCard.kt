@@ -16,6 +16,7 @@ import com.tomildev.weathy.core.presentation.components.spacers.VerticalSpacer
 import com.tomildev.weathy.core.presentation.components.texts.Texts
 import com.tomildev.weathy.ui.theme.Dimens
 import com.tomildev.weathy.ui.theme.NDotFontFamily
+import com.tomildev.weathy.ui.theme.TechMonoFontFamily
 
 @Composable
 fun InformationCard(
@@ -34,7 +35,7 @@ fun InformationCard(
         Column(
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 13.dp),
         ) {
-            Texts.BodySmall(text = dataDescription, isSecondary = true)
+            Texts.BodySmall(text = dataDescription, isSecondary = true, fontFamily = TechMonoFontFamily)
             VerticalSpacer(Dimens.SpacingTiny)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -45,7 +46,7 @@ fun InformationCard(
                     fontFamily = NDotFontFamily
                 )
                 HorizontalSpacer(Dimens.SpacingTiny)
-                Texts.Body(text = dataUnits, fontWeight = FontWeight.Normal, isSecondary = true)
+                Texts.Body(text = dataUnits, fontWeight = FontWeight.Normal, isSecondary = true, fontFamily = TechMonoFontFamily)
             }
         }
     }

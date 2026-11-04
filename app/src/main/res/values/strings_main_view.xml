@@ -3,9 +3,12 @@
 
     <!-- COMPONENT STRINGS -->
     <string name="main_view_today">Today</string>
+    <string name="main_view_today_day">TODAY %1$s</string>
     <string name="main_view_humidity">Humidity</string>
     <string name="main_view_wind_speed">Wind</string>
     <string name="main_view_pressure">Pressure</string>
+    <string name="main_view_today_forecast">Today forecast</string>
+    <string name="main_view_seven_days_forecast">Seven days forecast</string>
 
     <!-- WEATHER TYPE CODE DESCRIPTIONS -->
     <string name="weather_code_description_clear_sky">Clear sky</string>

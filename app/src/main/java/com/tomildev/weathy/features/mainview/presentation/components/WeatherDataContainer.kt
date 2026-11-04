@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +22,7 @@ import com.tomildev.weathy.ui.theme.Dimens
 @Composable
 fun WeatherDataContainer(
     modifier: Modifier = Modifier,
-    dragHandleColor: Color = Color(0xFFff2a2a),
+    dragHandleColor: Color = MaterialTheme.colorScheme.secondary,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -34,7 +35,7 @@ fun WeatherDataContainer(
                     topEnd = 50.dp
                 )
             )
-            .background(Color(0xFF1c1c1e))
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .padding(Dimens.SpacingTiny)
     ) {
         Box(

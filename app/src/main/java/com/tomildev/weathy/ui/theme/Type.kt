@@ -12,6 +12,10 @@ val NDotFontFamily = FontFamily(
     Font(R.font.ndot_57_aligned, FontWeight.Normal)
 )
 
+val TechMonoFontFamily = FontFamily(
+    Font(R.font.tech_mono_regular, FontWeight.Normal)
+)
+
 val Typography = Typography(
     headlineLarge = TextStyle(
         fontSize = 53.sp,

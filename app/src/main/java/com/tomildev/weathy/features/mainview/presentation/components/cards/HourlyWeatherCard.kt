@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,7 @@ import com.tomildev.weathy.core.presentation.components.spacers.VerticalSpacer
 import com.tomildev.weathy.core.presentation.components.texts.Texts
 import com.tomildev.weathy.ui.theme.Dimens
 import com.tomildev.weathy.ui.theme.NDotFontFamily
+import com.tomildev.weathy.ui.theme.TechMonoFontFamily
 
 @Composable
 fun HourlyWeatherCard(
@@ -44,10 +44,10 @@ fun HourlyWeatherCard(
                 .padding(horizontal = 25.dp, vertical = 13.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Texts.BodySmall(text = hour, isSecondary = true)
+            Texts.BodySmall(text = hour, isSecondary = true, fontFamily = TechMonoFontFamily)
             if (period != null) {
                 VerticalSpacer(Dimens.SpacingTiny)
-                Texts.BodySmall(text = period, isSecondary = true)
+                Texts.BodySmall(text = period, isSecondary = true, fontFamily = TechMonoFontFamily)
             }
             VerticalSpacer(Dimens.SpacingExtraSmall)
             Icon(
@@ -66,7 +66,7 @@ fun HourlyWeatherCard(
                 modifier = Modifier
                     .size(6.dp)
                     .clip(shape = CircleShape)
-                    .background(color = Color(0xFFff2a2a))
+                    .background(color = MaterialTheme.colorScheme.secondary)
             )
         }
     }

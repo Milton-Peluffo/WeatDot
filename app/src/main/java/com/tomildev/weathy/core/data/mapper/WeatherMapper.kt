@@ -51,15 +51,12 @@ fun WeatherResponseDto.toWeatherInfo(): WeatherInfo {
         }
 
         if (parsedDate != null) {
-            val dayName = if (parsedDate == today) {
-                "HOY ${parsedDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).uppercase()}"
-            } else {
-                parsedDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).uppercase()
-            }
+            val dayName = parsedDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).uppercase()
 
             DailyWeather(
                 date = rawDate,
                 dayName = dayName,
+                isToday = (parsedDate == today),
                 minTemperature = this.dailyWeather.temperatureMin[index],
                 maxTemperature = this.dailyWeather.temperatureMax[index],
                 weatherType = WeatherType.fromWMO(this.dailyWeather.weatherCode[index])

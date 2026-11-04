@@ -3,9 +3,12 @@
 
     <!-- COMPONENT STRINGS -->
     <string name="main_view_today">Hoy</string>
+    <string name="main_view_today_day">HOY %1$s</string>
     <string name="main_view_humidity">Humedad</string>
     <string name="main_view_wind_speed">Viento</string>
     <string name="main_view_pressure">Presión</string>
+    <string name="main_view_today_forecast">Pronostico de hoy</string>
+    <string name="main_view_seven_days_forecast">Pronostico de 7 días</string>
 
     <!-- WEATHER TYPE CODE DESCRIPTIONS -->
     <string name="weather_code_description_clear_sky">Despejado</string>

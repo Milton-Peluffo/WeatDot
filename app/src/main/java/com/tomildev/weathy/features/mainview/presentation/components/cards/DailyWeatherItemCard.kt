@@ -12,13 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.tomildev.weathy.core.presentation.components.spacers.HorizontalSpacer
 import com.tomildev.weathy.core.presentation.components.texts.Texts
 import com.tomildev.weathy.ui.theme.Dimens
 import com.tomildev.weathy.ui.theme.NDotFontFamily
+import com.tomildev.weathy.ui.theme.TechMonoFontFamily
 
 @Composable
 fun DailyWeatherItemCard(
@@ -44,7 +44,8 @@ fun DailyWeatherItemCard(
             Texts.BodySmall(
                 text = dayName,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                fontFamily = TechMonoFontFamily
             )
 
             Icon(

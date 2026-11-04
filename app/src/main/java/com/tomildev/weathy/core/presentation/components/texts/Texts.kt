@@ -43,6 +43,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         textAlign: TextAlign = TextAlign.Start,
         isSecondary: Boolean = false
@@ -53,6 +54,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             alpha = if (isSecondary) Alpha.AlphaHigh else Alpha.AlphaFull,
             textAlign = textAlign
@@ -65,6 +67,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         textAlign: TextAlign = TextAlign.Start,
         isSecondary: Boolean = false
@@ -75,6 +78,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             alpha = if (isSecondary) Alpha.AlphaHigh else Alpha.AlphaFull,
             textAlign = textAlign
@@ -87,6 +91,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start,
@@ -99,6 +104,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign,
             maxLines = maxLines,
@@ -209,6 +215,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start,
@@ -221,6 +228,7 @@ object Texts {
             color = color,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign,
             maxLines = maxLines,
@@ -235,6 +243,7 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
+        fontFamily: FontFamily? = null,
         style: TextStyle? = null,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start
@@ -245,6 +254,7 @@ object Texts {
             style = MaterialTheme.typography.labelSmall,
             color = color,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             overrideStyle = style,
             textAlign = textAlign,
             alpha = if (isSecondary) Alpha.AlphaHigh else Alpha.AlphaFull
