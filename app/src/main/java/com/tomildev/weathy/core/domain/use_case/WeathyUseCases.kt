@@ -1,5 +1,7 @@
 package com.tomildev.weathy.core.domain.use_case
 
-class WeathyUseCases(
+import javax.inject.Inject
+
+class WeathyUseCases @Inject constructor(
     val getWeatherDataUseCase: GetWeatherDataUseCase
 )

@@ -40,6 +40,12 @@ android {
 
 dependencies {
 
+    //KOTLIN COROUTINES
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    //DATASTORE
+    implementation(libs.androidx.datastore.preferences)
+
     //LOTTIE
     implementation(libs.lottie.compose)
 

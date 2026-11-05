@@ -55,6 +55,20 @@ fun MainViewScreen(
     viewModel: MainViewViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    MainViewContent(
+        modifier = modifier,
+        uiState = uiState,
+        onRefresh = { viewModel.loadWeatherInfo() }
+    )
+}
+
+@Composable
+fun MainViewContent(
+    modifier: Modifier = Modifier,
+    uiState: MainViewUiState,
+    onRefresh: () -> Unit
+) {
     val currentWeather = uiState.weatherInfo?.currentWeather
     val context = LocalContext.current
     val systemFormat = TimeFormatter.getSystemTimeFormat(context)
@@ -112,14 +126,18 @@ fun MainViewScreen(
                 }
 
                 SectionText(text = stringResource(R.string.main_view_today_forecast))
+
                 val hourlyForecast = uiState.weatherInfo?.hourlyForecast ?: emptyList()
+
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
                 ) {
-                    items(hourlyForecast) { hourlyItem ->
-                        val formattedTime =
-                            TimeFormatter.formatHour(hourlyItem.time, systemFormat)
+                    items(
+                        items = hourlyForecast,
+                        key = { it.time }
+                    ) { hourlyItem ->
+                        val formattedTime = TimeFormatter.formatHour(hourlyItem.time, systemFormat)
                         HourlyWeatherCard(
                             hour = formattedTime.hour,
                             period = formattedTime.period,
@@ -130,7 +148,9 @@ fun MainViewScreen(
                 }
 
                 SectionText(text = stringResource(R.string.main_view_seven_days_forecast))
+
                 val dailyForecast = uiState.weatherInfo?.dailyForecast ?: emptyList()
+
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
