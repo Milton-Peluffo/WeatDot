@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    namespace = "com.tomildev.weathy"
+    namespace = "com.tomildev.weatdot"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.tomildev.weathy"
+        applicationId = "com.tomildev.weatdot"
         minSdk = 26
         targetSdk = 37
         versionCode = 1
