@@ -1,17 +1,19 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
-    namespace = "com.tomildev.weathy"
+    namespace = "com.tomildev.weatdot"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.tomildev.weathy"
-        minSdk = 24
+        applicationId = "com.tomildev.weatdot"
+        minSdk = 26
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
@@ -38,9 +40,28 @@ android {
 
 dependencies {
 
+    //KOTLIN COROUTINES
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    //DATASTORE
+    implementation(libs.androidx.datastore.preferences)
+
+    //LOTTIE
+    implementation(libs.lottie.compose)
+
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    //DI
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    ksp(libs.hilt.compiler)
+
+    //LOCATION
+    implementation(libs.play.services.location)
+
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

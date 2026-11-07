@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 0 · Clear sky · Cielo despejado -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M7.8,12a4.2,4.2 0 1,0 8.4,0a4.2,4.2 0 1,0 -8.4,0M19.2,12L21.4,12M17.09,6.91L18.65,5.35M12,4.8L12,2.6M6.91,6.91L5.35,5.35M4.8,12L2.6,12M6.91,17.09L5.35,18.65M12,19.2L12,21.4M17.09,17.09L18.65,18.65"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

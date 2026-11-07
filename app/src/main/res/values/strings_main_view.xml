@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- COMPONENT STRINGS -->
+    <string name="main_view_today">Today</string>
+    <string name="main_view_today_day">TODAY %1$s</string>
+    <string name="main_view_humidity">Humidity</string>
+    <string name="main_view_wind_speed">Wind</string>
+    <string name="main_view_pressure">Pressure</string>
+    <string name="main_view_today_forecast">Today forecast</string>
+    <string name="main_view_seven_days_forecast">Seven days forecast</string>
+
+    <!-- WEATHER TYPE CODE DESCRIPTIONS -->
+    <string name="weather_code_description_clear_sky">Clear sky</string>
+    <string name="weather_code_description_mainly_clear">Mainly clear</string>
+    <string name="weather_code_description_partly_cloudy">Partly cloudy</string>
+    <string name="weather_code_description_overcast">Overcast</string>
+    <string name="weather_code_description_fog">Fog</string>
+    <string name="weather_code_description_depositing_rime_fog">Depositing rime fog</string>
+    <string name="weather_code_description_light_drizzle">Light drizzle</string>
+    <string name="weather_code_description_moderate_drizzle">Moderate drizzle</string>
+    <string name="weather_code_description_dense_drizzle">Dense drizzle</string>
+    <string name="weather_code_description_light_freezing_drizzle">Light freezing drizzle</string>
+    <string name="weather_code_description_dense_freezing_drizzle">Dense freezing drizzle</string>
+    <string name="weather_code_description_slight_rain">Slight rain</string>
+    <string name="weather_code_description_moderate_rain">Moderate rain</string>
+    <string name="weather_code_description_heavy_rain">Heavy rain</string>
+    <string name="weather_code_description_light_freezing_rain">Light freezing rain</string>
+    <string name="weather_code_description_heavy_freezing_rain">Heavy freezing rain</string>
+    <string name="weather_code_description_slight_snowfall">Slight snowfall</string>
+    <string name="weather_code_description_moderate_snowfall">Moderate snowfall</string>
+    <string name="weather_code_description_heavy_snowfall">Heavy snowfall</string>
+    <string name="weather_code_description_snow_grains">Snow grains</string>
+    <string name="weather_code_description_slight_rain_showers">Slight rain showers</string>
+    <string name="weather_code_description_moderate_rain_showers">Moderate rain showers</string>
+    <string name="weather_code_description_violent_rain_showers">Violent rain showers</string>
+    <string name="weather_code_description_slight_snow_showers">Slight snow showers</string>
+    <string name="weather_code_description_heavy_snow_showers">Heavy snow showers</string>
+    <string name="weather_code_description_thunderstorm">Thunderstorm</string>
+    <string name="weather_code_description_thunderstorm_with_slight_hail">Thunderstorm with slight hail</string>
+    <string name="weather_code_description_heavy_thunderstorm">Heavy thunderstorm</string>
+    <string name="weather_code_description_thunderstorm_with_heavy_hail">Thunderstorm with heavy hail</string>
+</resources>

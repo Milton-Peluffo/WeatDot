@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- COMPONENT STRINGS -->
+    <string name="main_view_today">Hoy</string>
+    <string name="main_view_today_day">HOY %1$s</string>
+    <string name="main_view_humidity">Humedad</string>
+    <string name="main_view_wind_speed">Viento</string>
+    <string name="main_view_pressure">Presión</string>
+    <string name="main_view_today_forecast">Pronostico de hoy</string>
+    <string name="main_view_seven_days_forecast">Pronostico de 7 días</string>
+
+    <!-- WEATHER TYPE CODE DESCRIPTIONS -->
+    <string name="weather_code_description_clear_sky">Despejado</string>
+    <string name="weather_code_description_mainly_clear">Principalmente despejado</string>
+    <string name="weather_code_description_partly_cloudy">Parcialmente nublado</string>
+    <string name="weather_code_description_overcast">Nublado</string>
+    <string name="weather_code_description_fog">Niebla</string>
+    <string name="weather_code_description_depositing_rime_fog">Niebla escarchada</string>
+    <string name="weather_code_description_light_drizzle">Llovizna ligera</string>
+    <string name="weather_code_description_moderate_drizzle">Llovizna moderada</string>
+    <string name="weather_code_description_dense_drizzle">Llovizna densa</string>
+    <string name="weather_code_description_light_freezing_drizzle">Llovizna helada ligera</string>
+    <string name="weather_code_description_dense_freezing_drizzle">Llovizna helada densa</string>
+    <string name="weather_code_description_slight_rain">Lluvia ligera</string>
+    <string name="weather_code_description_moderate_rain">Lluvia moderada</string>
+    <string name="weather_code_description_heavy_rain">Lluvia fuerte</string>
+    <string name="weather_code_description_light_freezing_rain">Lluvia congelante ligera</string>
+    <string name="weather_code_description_heavy_freezing_rain">Lluvia congelante fuerte</string>
+    <string name="weather_code_description_slight_snowfall">Nevada ligera</string>
+    <string name="weather_code_description_moderate_snowfall">Nevada moderada</string>
+    <string name="weather_code_description_heavy_snowfall">Nevada fuerte</string>
+    <string name="weather_code_description_snow_grains">Granizo fino</string>
+    <string name="weather_code_description_slight_rain_showers">Chubascos ligeros</string>
+    <string name="weather_code_description_moderate_rain_showers">Chubascos moderados</string>
+    <string name="weather_code_description_violent_rain_showers">Chubascos violentos</string>
+    <string name="weather_code_description_slight_snow_showers">Chubascos de nieve ligeros</string>
+    <string name="weather_code_description_heavy_snow_showers">Chubascos de nieve fuertes</string>
+    <string name="weather_code_description_thunderstorm">Tormenta eléctrica</string>
+    <string name="weather_code_description_thunderstorm_with_slight_hail">Tormenta con granizo ligero</string>
+    <string name="weather_code_description_heavy_thunderstorm">Tormenta eléctrica fuerte</string>
+    <string name="weather_code_description_thunderstorm_with_heavy_hail">Tormenta con granizo fuerte</string>
+</resources>

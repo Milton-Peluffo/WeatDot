@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 85 · Slight snow showers · Chubascos de nieve ligeros -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M6.44,10.46A2.9,2.9 0 1 1 10.33,6.81M11.28,4.12L12.2,3.2M7.6,2.6L7.6,1.3M3.92,4.12L3,3.2M2.4,7.8L1.1,7.8M3.92,11.48L3,12.4"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M11.32,15.56L19.07,15.56A3.13,3.13 0 1 0 18.46,9.36A3.81,3.81 0 0 0 11.48,10.12A2.72,2.72 0 1 0 11.32,15.56Z"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M12.8,18.4L12.8,21.6M11.41,19.2L14.19,20.8M14.19,19.2L11.41,20.8M18,18.4L18,21.6M16.61,19.2L19.39,20.8M19.39,19.2L16.61,20.8"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>
