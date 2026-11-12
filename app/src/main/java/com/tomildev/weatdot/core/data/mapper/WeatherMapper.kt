@@ -1,6 +1,9 @@
 package com.tomildev.weatdot.core.data.mapper
 
 import com.tomildev.weatdot.core.data.dto.WeatherResponseDto
+import com.tomildev.weatdot.core.data.local.database.entity.DailyWeatherEntity
+import com.tomildev.weatdot.core.data.local.database.entity.HourlyWeatherEntity
+import com.tomildev.weatdot.core.data.local.database.entity.WeatherEntity
 import com.tomildev.weatdot.core.domain.model.CurrentWeather
 import com.tomildev.weatdot.core.domain.model.DailyWeather
 import com.tomildev.weatdot.core.domain.model.HourlyWeather
@@ -12,18 +15,16 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
-/**
-Función de extensión para convertir un objeto WeatherResponseDto en un objeto WeatherInfo.
- */
-fun WeatherResponseDto.toWeatherInfo(): WeatherInfo {
-    val currentData = this.currentWeather
-
+fun WeatherResponseDto.toWeatherEntity(
+    cityName: String,
+    countryName: String
+): WeatherEntity {
+    val currentData = currentWeather
     val now = LocalDateTime.now()
     val today = now.toLocalDate()
 
-    val hourlyList = this.hourlyWeather.time.indices.mapNotNull { index ->
-        val rawTime = this.hourlyWeather.time[index]
-
+    val hourlyList = hourlyWeather.time.indices.mapNotNull { index ->
+        val rawTime = hourlyWeather.time[index]
         val dateTime = try {
             LocalDateTime.parse(rawTime, DateTimeFormatter.ISO_DATE_TIME)
         } catch (e: Exception) {
@@ -31,19 +32,18 @@ fun WeatherResponseDto.toWeatherInfo(): WeatherInfo {
         }
 
         if (dateTime != null && dateTime.toLocalDate() == today) {
-            HourlyWeather(
+            HourlyWeatherEntity(
                 time = rawTime,
-                temperature = this.hourlyWeather.temperature[index],
-                weatherType = WeatherType.fromWMO(this.hourlyWeather.weatherCode[index])
+                temperature = hourlyWeather.temperature[index],
+                weatherCode = hourlyWeather.weatherCode[index]
             )
         } else {
             null
         }
     }
 
-    val dailyList = this.dailyWeather.time.indices.mapNotNull { index ->
-        val rawDate = this.dailyWeather.time[index]
-
+    val dailyList = dailyWeather.time.indices.mapNotNull { index ->
+        val rawDate = dailyWeather.time[index]
         val parsedDate = try {
             LocalDate.parse(rawDate, DateTimeFormatter.ISO_LOCAL_DATE)
         } catch (e: Exception) {
@@ -51,30 +51,61 @@ fun WeatherResponseDto.toWeatherInfo(): WeatherInfo {
         }
 
         if (parsedDate != null) {
-            val dayName = parsedDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).uppercase()
-
-            DailyWeather(
+            val dayName =
+                parsedDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).uppercase()
+            DailyWeatherEntity(
                 date = rawDate,
                 dayName = dayName,
                 isToday = (parsedDate == today),
-                minTemperature = this.dailyWeather.temperatureMin[index],
-                maxTemperature = this.dailyWeather.temperatureMax[index],
-                weatherType = WeatherType.fromWMO(this.dailyWeather.weatherCode[index])
+                minTemperature = dailyWeather.temperatureMin[index],
+                maxTemperature = dailyWeather.temperatureMax[index],
+                weatherCode = dailyWeather.weatherCode[index]
             )
         } else {
             null
         }
     }
 
-    return WeatherInfo(
-        currentWeather = CurrentWeather(
-            temperature = currentData.temperature,
-            humidity = currentData.humidity,
-            pressure = currentData.pressure,
-            windSpeed = currentData.windSpeed,
-            weatherType = WeatherType.fromWMO(currentData.weatherCode)
-        ),
+    return WeatherEntity(
+        id = 0,
+        cityName = cityName,
+        countryName = countryName,
+        temperature = currentData.temperature,
+        humidity = currentData.humidity,
+        pressure = currentData.pressure,
+        windSpeed = currentData.windSpeed,
+        weatherCode = currentData.weatherCode,
+        updatedAtTimestamp = System.currentTimeMillis(),
         hourlyForecast = hourlyList,
         dailyForecast = dailyList
+    )
+}
+
+fun WeatherEntity.toWeatherInfo(): WeatherInfo {
+    return WeatherInfo(
+        currentWeather = CurrentWeather(
+            temperature = temperature,
+            humidity = humidity,
+            pressure = pressure,
+            windSpeed = windSpeed,
+            weatherType = WeatherType.fromWMO(weatherCode)
+        ),
+        hourlyForecast = hourlyForecast.map { entity ->
+            HourlyWeather(
+                time = entity.time,
+                temperature = entity.temperature,
+                weatherType = WeatherType.fromWMO(entity.weatherCode)
+            )
+        },
+        dailyForecast = dailyForecast.map { entity ->
+            DailyWeather(
+                date = entity.date,
+                dayName = entity.dayName,
+                isToday = entity.isToday,
+                minTemperature = entity.minTemperature,
+                maxTemperature = entity.maxTemperature,
+                weatherType = WeatherType.fromWMO(entity.weatherCode)
+            )
+        }
     )
 }

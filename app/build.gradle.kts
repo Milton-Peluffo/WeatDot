@@ -40,6 +40,11 @@ android {
 
 dependencies {
 
+    // ROOM DATABASE
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
     //KOTLIN COROUTINES
     implementation(libs.kotlinx.coroutines.play.services)
 

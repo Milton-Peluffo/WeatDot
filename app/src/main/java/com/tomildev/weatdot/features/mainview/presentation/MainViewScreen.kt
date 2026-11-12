@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -44,15 +45,17 @@ import com.tomildev.weatdot.core.presentation.components.texts.SectionText
 import com.tomildev.weatdot.core.presentation.components.texts.Texts
 import com.tomildev.weatdot.core.presentation.components.topbars.AppTopBars
 import com.tomildev.weatdot.core.util.TimeFormatter
+import com.tomildev.weatdot.features.mainview.preferences.app_preferences.AppPreferencesBottomSheet
 import com.tomildev.weatdot.features.mainview.presentation.components.WeatherDataContainer
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.DailyWeatherItemCard
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.HourlyWeatherCard
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.InformationCard
+import com.tomildev.weatdot.ui.theme.AppDrawables
 import com.tomildev.weatdot.ui.theme.Dimens
 import com.tomildev.weatdot.ui.theme.NDotFontFamily
 import com.tomildev.weatdot.ui.theme.TechMonoFontFamily
-import com.tomildev.weatdot.ui.theme.WeatDotDrawables
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainViewScreen(
     modifier: Modifier = Modifier,
@@ -82,10 +85,11 @@ fun MainViewScreen(
     MainViewContent(
         modifier = modifier,
         uiState = uiState,
-        onRefresh = {  }
+        onRefresh = { }
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainViewContent(
     modifier: Modifier = Modifier,
@@ -96,11 +100,15 @@ fun MainViewContent(
     val context = LocalContext.current
     val systemFormat = TimeFormatter.getSystemTimeFormat(context)
     val scrollState = rememberScrollState()
+    val screenState = rememberMainViewScreenState()
+
 
     AppScaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            AppTopBars.ButtonTopBar(icon = WeatDotDrawables.Icons.Menu, onClick = {})
+            AppTopBars.ButtonTopBar(
+                icon = AppDrawables.Icons.Menu,
+                onClick = { screenState.openMainViewPreferences() })
         }
     ) { innerPadding ->
         Column(
@@ -195,6 +203,13 @@ fun MainViewContent(
                 }
             }
         }
+        when (val action = screenState.activeAction) {
+            is MainScreenAction.MainViewPreferences -> {
+                AppPreferencesBottomSheet(onDismissRequest = {})
+            }
+
+            else -> {}
+        }
     }
 }
 
@@ -247,7 +262,7 @@ private fun MainViewHeader(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val backgroundRes =
-                    weatherType?.backgroundRes ?: WeatDotDrawables.Backgrounds.Thunderstorm
+                    weatherType?.backgroundRes ?: AppDrawables.Backgrounds.Thunderstorm
                 val lottieComposition by rememberLottieComposition(
                     LottieCompositionSpec.RawRes(backgroundRes)
                 )
@@ -271,7 +286,7 @@ private fun MainViewHeader(
                             .padding(end = Dimens.SpacingTiny)
                             .size(Dimens.IconSizeNormal),
                         painter = painterResource(
-                            weatherType?.iconRes ?: WeatDotDrawables.Icons.ClearSky
+                            weatherType?.iconRes ?: AppDrawables.Icons.ClearSky
                         ),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface

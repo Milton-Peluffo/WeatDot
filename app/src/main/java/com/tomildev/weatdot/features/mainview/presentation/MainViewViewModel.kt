@@ -2,10 +2,10 @@ package com.tomildev.weatdot.features.mainview.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tomildev.weatdot.core.data.preferences.LocationPreferences
+import com.tomildev.weatdot.core.data.local.preferences.LocationPreferences
 import com.tomildev.weatdot.core.data.remote.GeocodingApi
 import com.tomildev.weatdot.core.domain.location.LocationTracker
-import com.tomildev.weatdot.core.domain.use_case.WeatDotUseCases
+import com.tomildev.weatdot.core.domain.use_case.AppUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewViewModel @Inject constructor(
-    private val weatDotUseCases: WeatDotUseCases,
+    private val appUseCases: AppUseCases,
     private val locationTracker: LocationTracker,
     private val locationPreferences: LocationPreferences,
     private val geocodingApi: GeocodingApi
@@ -26,11 +26,11 @@ class MainViewViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        observeDavedLocationAndLoadWeather()
+        observeSavedLocationAndRoomCache()
         fetchCurrentGpsLocation()
     }
 
-    private fun observeDavedLocationAndLoadWeather() {
+    private fun observeSavedLocationAndRoomCache() {
         viewModelScope.launch {
             locationPreferences.savedLocationFlow.collect { savedLocation ->
                 _uiState.update {
@@ -39,7 +39,23 @@ class MainViewViewModel @Inject constructor(
                         countryName = savedLocation.countryName
                     )
                 }
-                loadWeatherInfo(savedLocation.latitude, savedLocation.longitude)
+                refreshWeatherData(
+                    lat = savedLocation.latitude,
+                    long = savedLocation.longitude,
+                    cityName = savedLocation.cityName,
+                    countryName = savedLocation.countryName
+                )
+            }
+        }
+
+        viewModelScope.launch {
+            appUseCases.getWeatherFlowUseCase().collect { weatherInfo ->
+                _uiState.update {
+                    it.copy(
+                        weatherInfo = weatherInfo,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
@@ -50,14 +66,12 @@ class MainViewViewModel @Inject constructor(
             if (location != null) {
                 try {
                     val userLanguage = Locale.getDefault().language
-
                     val geoDto = geocodingApi.getCityAndCountry(
                         latitude = location.latitude,
                         longitude = location.longitude,
                         language = userLanguage
                     )
-
-                    val cityName = geoDto.locality ?: geoDto.city ?: "Ubicación"
+                    val cityName = geoDto.locality ?: geoDto.city ?: "Location"
                     val countryName = geoDto.countryName ?: ""
 
                     locationPreferences.saveLocation(
@@ -73,30 +87,15 @@ class MainViewViewModel @Inject constructor(
         }
     }
 
-    fun loadWeatherInfo(lat: Double, long: Double) {
+    fun refreshWeatherData(lat: Double, long: Double, cityName: String, countryName: String) {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    isLoading = true,
-                    error = null
-                )
-            }
-
-            val result = weatDotUseCases.getWeatherDataUseCase(lat, long)
-
-            result.onSuccess { weatherInfo ->
-                _uiState.update {
-                    it.copy(
-                        weatherInfo = weatherInfo,
-                        isLoading = false,
-                        error = null
-                    )
-                }
-            }.onFailure { exception ->
+            _uiState.update { it.copy(isLoading = true, error = null) }
+            val result = appUseCases.fetchWeatherUseCase(lat, long, cityName, countryName)
+            result.onFailure { exception ->
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = exception.message ?: "Error al cargar el clima"
+                        error = exception.message ?: "Offline Mode"
                     )
                 }
             }
