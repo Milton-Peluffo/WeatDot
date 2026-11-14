@@ -6,5 +6,6 @@ Clase de datos que representa la informacion proveniente de los modelos de domin
 data class WeatherInfo(
     val currentWeather: CurrentWeather?,
     val hourlyForecast: List<HourlyWeather> = emptyList(),
-    val dailyForecast: List<DailyWeather> = emptyList()
+    val dailyForecast: List<DailyWeather> = emptyList(),
+    val updatedAtTimestamp: Long = 0L
 )

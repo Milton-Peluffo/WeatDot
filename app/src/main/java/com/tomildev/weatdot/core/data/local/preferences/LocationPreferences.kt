@@ -1,4 +1,4 @@
-package com.tomildev.weatdot.core.data.preferences
+package com.tomildev.weatdot.core.data.local.preferences
 
 import android.content.Context
 import androidx.datastore.core.DataStore

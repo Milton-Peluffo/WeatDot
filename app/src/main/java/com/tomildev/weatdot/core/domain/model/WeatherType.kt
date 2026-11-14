@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import com.tomildev.weatdot.R
-import com.tomildev.weatdot.ui.theme.WeatDotDrawables
+import com.tomildev.weatdot.ui.theme.AppDrawables
 
 sealed class WeatherType(
     @StringRes val weatherDescRes: Int,
@@ -13,176 +13,176 @@ sealed class WeatherType(
 ) {
     object ClearSky : WeatherType(
         weatherDescRes = R.string.weather_code_description_clear_sky,
-        iconRes = WeatDotDrawables.Icons.ClearSky,
-        backgroundRes = WeatDotDrawables.Backgrounds.ClearSky
+        iconRes = AppDrawables.Icons.ClearSky,
+        backgroundRes = AppDrawables.Backgrounds.ClearSky
     )
 
     object MainlyClear : WeatherType(
         weatherDescRes = R.string.weather_code_description_mainly_clear,
-        iconRes = WeatDotDrawables.Icons.MainlyClear,
-        backgroundRes = WeatDotDrawables.Backgrounds.MainlyClear
+        iconRes = AppDrawables.Icons.MainlyClear,
+        backgroundRes = AppDrawables.Backgrounds.MainlyClear
     )
 
     object PartlyCloudy : WeatherType(
         weatherDescRes = R.string.weather_code_description_partly_cloudy,
-        iconRes = WeatDotDrawables.Icons.PartlyCloudy,
-        backgroundRes = WeatDotDrawables.Backgrounds.PartlyCloudy
+        iconRes = AppDrawables.Icons.PartlyCloudy,
+        backgroundRes = AppDrawables.Backgrounds.PartlyCloudy
     )
 
     object Overcast : WeatherType(
         weatherDescRes = R.string.weather_code_description_overcast,
-        iconRes = WeatDotDrawables.Icons.Overcast,
-        backgroundRes = WeatDotDrawables.Backgrounds.Overcast
+        iconRes = AppDrawables.Icons.Overcast,
+        backgroundRes = AppDrawables.Backgrounds.Overcast
     )
 
     object Fog : WeatherType(
         weatherDescRes = R.string.weather_code_description_fog,
-        iconRes = WeatDotDrawables.Icons.Fog,
-        backgroundRes = WeatDotDrawables.Backgrounds.Fog
+        iconRes = AppDrawables.Icons.Fog,
+        backgroundRes = AppDrawables.Backgrounds.Fog
     )
 
     object DepositingRimeFog : WeatherType(
         weatherDescRes = R.string.weather_code_description_depositing_rime_fog,
-        iconRes = WeatDotDrawables.Icons.DepositingRimeFog,
-        backgroundRes = WeatDotDrawables.Backgrounds.DepositingRimeFog
+        iconRes = AppDrawables.Icons.DepositingRimeFog,
+        backgroundRes = AppDrawables.Backgrounds.DepositingRimeFog
     )
 
     object LightDrizzle : WeatherType(
         weatherDescRes = R.string.weather_code_description_light_drizzle,
-        iconRes = WeatDotDrawables.Icons.LightDrizzle,
-        backgroundRes = WeatDotDrawables.Backgrounds.LightDrizzle
+        iconRes = AppDrawables.Icons.LightDrizzle,
+        backgroundRes = AppDrawables.Backgrounds.LightDrizzle
     )
 
     object ModerateDrizzle : WeatherType(
         weatherDescRes = R.string.weather_code_description_moderate_drizzle,
-        iconRes = WeatDotDrawables.Icons.ModerateDrizzle,
-        backgroundRes = WeatDotDrawables.Backgrounds.ModerateDrizzle
+        iconRes = AppDrawables.Icons.ModerateDrizzle,
+        backgroundRes = AppDrawables.Backgrounds.ModerateDrizzle
     )
 
     object DenseDrizzle : WeatherType(
         weatherDescRes = R.string.weather_code_description_dense_drizzle,
-        iconRes = WeatDotDrawables.Icons.DenseDrizzle,
-        backgroundRes = WeatDotDrawables.Backgrounds.DenseDrizzle
+        iconRes = AppDrawables.Icons.DenseDrizzle,
+        backgroundRes = AppDrawables.Backgrounds.DenseDrizzle
     )
 
     object LightFreezingDrizzle : WeatherType(
         weatherDescRes = R.string.weather_code_description_light_freezing_drizzle,
-        iconRes = WeatDotDrawables.Icons.LightFreezingDrizzle,
-        backgroundRes = WeatDotDrawables.Backgrounds.LightFreezingDrizzle
+        iconRes = AppDrawables.Icons.LightFreezingDrizzle,
+        backgroundRes = AppDrawables.Backgrounds.LightFreezingDrizzle
     )
 
     object DenseFreezingDrizzle : WeatherType(
         weatherDescRes = R.string.weather_code_description_dense_freezing_drizzle,
-        iconRes = WeatDotDrawables.Icons.DenseFreezingDrizzle,
-        backgroundRes = WeatDotDrawables.Backgrounds.DenseFreezingDrizzle
+        iconRes = AppDrawables.Icons.DenseFreezingDrizzle,
+        backgroundRes = AppDrawables.Backgrounds.DenseFreezingDrizzle
     )
 
     object SlightRain : WeatherType(
         weatherDescRes = R.string.weather_code_description_slight_rain,
-        iconRes = WeatDotDrawables.Icons.SlightRain,
-        backgroundRes = WeatDotDrawables.Backgrounds.SlightRain
+        iconRes = AppDrawables.Icons.SlightRain,
+        backgroundRes = AppDrawables.Backgrounds.SlightRain
     )
 
     object ModerateRain : WeatherType(
         weatherDescRes = R.string.weather_code_description_moderate_rain,
-        iconRes = WeatDotDrawables.Icons.ModerateRain,
-        backgroundRes = WeatDotDrawables.Backgrounds.ModerateRain
+        iconRes = AppDrawables.Icons.ModerateRain,
+        backgroundRes = AppDrawables.Backgrounds.ModerateRain
     )
 
     object HeavyRain : WeatherType(
         weatherDescRes = R.string.weather_code_description_heavy_rain,
-        iconRes = WeatDotDrawables.Icons.HeavyRain,
-        backgroundRes = WeatDotDrawables.Backgrounds.HeavyRain
+        iconRes = AppDrawables.Icons.HeavyRain,
+        backgroundRes = AppDrawables.Backgrounds.HeavyRain
     )
 
     object LightFreezingRain : WeatherType(
         weatherDescRes = R.string.weather_code_description_light_freezing_rain,
-        iconRes = WeatDotDrawables.Icons.LightFreezingRain,
-        backgroundRes = WeatDotDrawables.Backgrounds.LightFreezingRain
+        iconRes = AppDrawables.Icons.LightFreezingRain,
+        backgroundRes = AppDrawables.Backgrounds.LightFreezingRain
     )
 
     object HeavyFreezingRain : WeatherType(
         weatherDescRes = R.string.weather_code_description_heavy_freezing_rain,
-        iconRes = WeatDotDrawables.Icons.HeavyFreezingRain,
-        backgroundRes = WeatDotDrawables.Backgrounds.HeavyFreezingRain
+        iconRes = AppDrawables.Icons.HeavyFreezingRain,
+        backgroundRes = AppDrawables.Backgrounds.HeavyFreezingRain
     )
 
     object SlightSnowfall : WeatherType(
         weatherDescRes = R.string.weather_code_description_slight_snowfall,
-        iconRes = WeatDotDrawables.Icons.SlightSnowfall,
-        backgroundRes = WeatDotDrawables.Backgrounds.SlightSnowfall
+        iconRes = AppDrawables.Icons.SlightSnowfall,
+        backgroundRes = AppDrawables.Backgrounds.SlightSnowfall
     )
 
     object ModerateSnowfall : WeatherType(
         weatherDescRes = R.string.weather_code_description_moderate_snowfall,
-        iconRes = WeatDotDrawables.Icons.ModerateSnowfall,
-        backgroundRes = WeatDotDrawables.Backgrounds.ModerateSnowfall
+        iconRes = AppDrawables.Icons.ModerateSnowfall,
+        backgroundRes = AppDrawables.Backgrounds.ModerateSnowfall
     )
 
     object HeavySnowfall : WeatherType(
         weatherDescRes = R.string.weather_code_description_heavy_snowfall,
-        iconRes = WeatDotDrawables.Icons.HeavySnowfall,
-        backgroundRes = WeatDotDrawables.Backgrounds.HeavySnowfall
+        iconRes = AppDrawables.Icons.HeavySnowfall,
+        backgroundRes = AppDrawables.Backgrounds.HeavySnowfall
     )
 
     object SnowGrains : WeatherType(
         weatherDescRes = R.string.weather_code_description_snow_grains,
-        iconRes = WeatDotDrawables.Icons.SnowGrains,
-        backgroundRes = WeatDotDrawables.Backgrounds.SnowGrains
+        iconRes = AppDrawables.Icons.SnowGrains,
+        backgroundRes = AppDrawables.Backgrounds.SnowGrains
     )
 
     object SlightRainShowers : WeatherType(
         weatherDescRes = R.string.weather_code_description_slight_rain_showers,
-        iconRes = WeatDotDrawables.Icons.SlightRainShowers,
-        backgroundRes = WeatDotDrawables.Backgrounds.SlightRainShowers
+        iconRes = AppDrawables.Icons.SlightRainShowers,
+        backgroundRes = AppDrawables.Backgrounds.SlightRainShowers
     )
 
     object ModerateRainShowers : WeatherType(
         weatherDescRes = R.string.weather_code_description_moderate_rain_showers,
-        iconRes = WeatDotDrawables.Icons.ModerateRainShowers,
-        backgroundRes = WeatDotDrawables.Backgrounds.ModerateRainShowers
+        iconRes = AppDrawables.Icons.ModerateRainShowers,
+        backgroundRes = AppDrawables.Backgrounds.ModerateRainShowers
     )
 
     object ViolentRainShowers : WeatherType(
         weatherDescRes = R.string.weather_code_description_violent_rain_showers,
-        iconRes = WeatDotDrawables.Icons.ViolentRainShowers,
-        backgroundRes = WeatDotDrawables.Backgrounds.ViolentRainShowers
+        iconRes = AppDrawables.Icons.ViolentRainShowers,
+        backgroundRes = AppDrawables.Backgrounds.ViolentRainShowers
     )
 
     object SlightSnowShowers : WeatherType(
         weatherDescRes = R.string.weather_code_description_slight_snow_showers,
-        iconRes = WeatDotDrawables.Icons.SlightSnowShowers,
-        backgroundRes = WeatDotDrawables.Backgrounds.SlightSnowShowers
+        iconRes = AppDrawables.Icons.SlightSnowShowers,
+        backgroundRes = AppDrawables.Backgrounds.SlightSnowShowers
     )
 
     object HeavySnowShowers : WeatherType(
         weatherDescRes = R.string.weather_code_description_heavy_snow_showers,
-        iconRes = WeatDotDrawables.Icons.HeavySnowShowers,
-        backgroundRes = WeatDotDrawables.Backgrounds.HeavySnowShowers
+        iconRes = AppDrawables.Icons.HeavySnowShowers,
+        backgroundRes = AppDrawables.Backgrounds.HeavySnowShowers
     )
 
     object Thunderstorm : WeatherType(
         weatherDescRes = R.string.weather_code_description_thunderstorm,
-        iconRes = WeatDotDrawables.Icons.Thunderstorm,
-        backgroundRes = WeatDotDrawables.Backgrounds.Thunderstorm
+        iconRes = AppDrawables.Icons.Thunderstorm,
+        backgroundRes = AppDrawables.Backgrounds.Thunderstorm
     )
 
     object ThunderstormWithSlightHail : WeatherType(
         weatherDescRes = R.string.weather_code_description_thunderstorm_with_slight_hail,
-        iconRes = WeatDotDrawables.Icons.ThunderstormWithSlightHail,
-        backgroundRes = WeatDotDrawables.Backgrounds.ThunderstormWithSlightHail
+        iconRes = AppDrawables.Icons.ThunderstormWithSlightHail,
+        backgroundRes = AppDrawables.Backgrounds.ThunderstormWithSlightHail
     )
 
     object HeavyThunderstorm : WeatherType(
         weatherDescRes = R.string.weather_code_description_heavy_thunderstorm,
-        iconRes = WeatDotDrawables.Icons.HeavyThunderstorm,
-        backgroundRes = WeatDotDrawables.Backgrounds.HeavyThunderstorm
+        iconRes = AppDrawables.Icons.HeavyThunderstorm,
+        backgroundRes = AppDrawables.Backgrounds.HeavyThunderstorm
     )
 
     object ThunderstormWithHeavyHail : WeatherType(
         weatherDescRes = R.string.weather_code_description_thunderstorm_with_heavy_hail,
-        iconRes = WeatDotDrawables.Icons.ThunderstormWithHeavyHail,
-        backgroundRes = WeatDotDrawables.Backgrounds.ThunderstormWithHeavyHail
+        iconRes = AppDrawables.Icons.ThunderstormWithHeavyHail,
+        backgroundRes = AppDrawables.Backgrounds.ThunderstormWithHeavyHail
     )
 
     companion object {

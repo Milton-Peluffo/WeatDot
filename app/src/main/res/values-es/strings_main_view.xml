@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- MESSAGES -->
+    <string name="main_view_message_updating">Actualizando...</string>">
+    <string name="main_view_message_updated">¡Actualizado exitosamente!</string>">
+    <string name="main_view_message_error">Ha ocurrido un error</string>">
+
     <!-- COMPONENT STRINGS -->
     <string name="main_view_today">Hoy</string>
     <string name="main_view_today_day">HOY %1$s</string>

@@ -16,8 +16,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,16 +44,15 @@ import com.tomildev.weatdot.core.presentation.components.spacers.HorizontalSpace
 import com.tomildev.weatdot.core.presentation.components.spacers.VerticalSpacer
 import com.tomildev.weatdot.core.presentation.components.texts.SectionText
 import com.tomildev.weatdot.core.presentation.components.texts.Texts
-import com.tomildev.weatdot.core.presentation.components.topbars.AppTopBars
 import com.tomildev.weatdot.core.util.TimeFormatter
 import com.tomildev.weatdot.features.mainview.presentation.components.WeatherDataContainer
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.DailyWeatherItemCard
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.HourlyWeatherCard
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.InformationCard
+import com.tomildev.weatdot.ui.theme.AppDrawables
 import com.tomildev.weatdot.ui.theme.Dimens
 import com.tomildev.weatdot.ui.theme.NDotFontFamily
 import com.tomildev.weatdot.ui.theme.TechMonoFontFamily
-import com.tomildev.weatdot.ui.theme.WeatDotDrawables
 
 @Composable
 fun MainViewScreen(
@@ -82,7 +83,7 @@ fun MainViewScreen(
     MainViewContent(
         modifier = modifier,
         uiState = uiState,
-        onRefresh = {  }
+        onRefresh = { viewModel.onPullToRefresh() }
     )
 }
 
@@ -99,98 +100,131 @@ fun MainViewContent(
 
     AppScaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = {
-            AppTopBars.ButtonTopBar(icon = WeatDotDrawables.Icons.Menu, onClick = {})
-        }
     ) { innerPadding ->
-        Column(
+        PullToRefreshBox(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .verticalScroll(scrollState)
+                .padding(innerPadding),
+            isRefreshing = uiState.isLoading,
+            onRefresh = { onRefresh() }
         ) {
-            MainViewHeader(
-                uiState = uiState,
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Dimens.ScreenHorizontalPadding)
-                    .graphicsLayer {
-                        val scroll = scrollState.value
-                        translationY = scroll * 0.65f
-                        val fadeDistance = size.height * 0.7f
-                        alpha = if (fadeDistance > 0f) {
-                            (1f - (scroll / fadeDistance)).coerceIn(0f, 1f)
-                        } else 1f
-                    }
-            )
-
-            WeatherDataContainer(
-                modifier = Modifier.padding(horizontal = Dimens.ScreenHorizontalPadding)
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    InformationCard(
-                        data = "${currentWeather?.humidity?.toInt() ?: "--"}",
-                        dataUnits = "%",
-                        dataDescription = stringResource(R.string.main_view_humidity)
-                    )
-                    InformationCard(
-                        data = "${currentWeather?.windSpeed ?: "--"}",
-                        dataUnits = "km/h",
-                        dataDescription = stringResource(R.string.main_view_wind_speed)
-                    )
-                    InformationCard(
-                        data = "${currentWeather?.pressure?.toInt() ?: "--"}",
-                        dataUnits = "hPa",
-                        dataDescription = stringResource(R.string.main_view_pressure)
+                if (uiState.statusMessageRes != null) {
+                    uiState.statusMessageRes.let { messageRes ->
+                        VerticalSpacer(Dimens.SpacingMedium)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            if (uiState.isLoading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(Dimens.IconSizeTiny),
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    strokeWidth = Dimens.BorderNormal
+                                )
+                                HorizontalSpacer(Dimens.SpacingTiny)
+                            }
+                            Texts.BodySmall(
+                                text = stringResource(messageRes),
+                                isSecondary = true
+                            )
+                        }
+                    }
+                } else if (uiState.error != null) {
+                    Texts.BodySmall(
+                        text = uiState.statusMessageRes ?: "",
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 }
+                VerticalSpacer(Dimens.SpacingExtraLarge)
+                MainViewHeader(
+                    uiState = uiState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer {
+                            val scroll = scrollState.value
+                            translationY = scroll * 0.65f
+                            val fadeDistance = size.height * 0.7f
+                            alpha = if (fadeDistance > 0f) {
+                                (1f - (scroll / fadeDistance)).coerceIn(0f, 1f)
+                            } else 1f
+                        }
+                )
 
-                SectionText(text = stringResource(R.string.main_view_today_forecast))
-
-                val hourlyForecast = uiState.weatherInfo?.hourlyForecast ?: emptyList()
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
+                WeatherDataContainer(
+                    modifier = Modifier.padding(horizontal = Dimens.ScreenHorizontalPadding)
                 ) {
-                    items(
-                        items = hourlyForecast,
-                        key = { it.time }
-                    ) { hourlyItem ->
-                        val formattedTime = TimeFormatter.formatHour(hourlyItem.time, systemFormat)
-                        HourlyWeatherCard(
-                            hour = formattedTime.hour,
-                            period = formattedTime.period,
-                            temperature = "${hourlyItem.temperature.toInt()}°",
-                            icon = hourlyItem.weatherType.iconRes
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        InformationCard(
+                            data = "${currentWeather?.humidity?.toInt() ?: "--"}",
+                            dataUnits = "%",
+                            dataDescription = stringResource(R.string.main_view_humidity)
+                        )
+                        InformationCard(
+                            data = "${currentWeather?.windSpeed ?: "--"}",
+                            dataUnits = "km/h",
+                            dataDescription = stringResource(R.string.main_view_wind_speed)
+                        )
+                        InformationCard(
+                            data = "${currentWeather?.pressure?.toInt() ?: "--"}",
+                            dataUnits = "hPa",
+                            dataDescription = stringResource(R.string.main_view_pressure)
                         )
                     }
-                }
 
-                SectionText(text = stringResource(R.string.main_view_seven_days_forecast))
+                    SectionText(text = stringResource(R.string.main_view_today_forecast))
 
-                val dailyForecast = uiState.weatherInfo?.dailyForecast ?: emptyList()
+                    val hourlyForecast = uiState.weatherInfo?.hourlyForecast ?: emptyList()
 
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
-                ) {
-                    dailyForecast.forEach { dailyItem ->
-                        val dayNameText = if (dailyItem.isToday) {
-                            stringResource(R.string.main_view_today_day, dailyItem.dayName)
-                        } else {
-                            dailyItem.dayName
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
+                    ) {
+                        items(
+                            items = hourlyForecast,
+                            key = { it.time }
+                        ) { hourlyItem ->
+                            val formattedTime =
+                                TimeFormatter.formatHour(hourlyItem.time, systemFormat)
+                            HourlyWeatherCard(
+                                hour = formattedTime.hour,
+                                period = formattedTime.period,
+                                temperature = "${hourlyItem.temperature.toInt()}°",
+                                icon = hourlyItem.weatherType.iconRes
+                            )
                         }
+                    }
 
-                        DailyWeatherItemCard(
-                            dayName = dayNameText,
-                            icon = dailyItem.weatherType.iconRes,
-                            minTemperature = "${dailyItem.minTemperature.toInt()}°",
-                            maxTemperature = "${dailyItem.maxTemperature.toInt()}°"
-                        )
+                    SectionText(text = stringResource(R.string.main_view_seven_days_forecast))
+
+                    val dailyForecast = uiState.weatherInfo?.dailyForecast ?: emptyList()
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
+                    ) {
+                        dailyForecast.forEach { dailyItem ->
+                            val dayNameText = if (dailyItem.isToday) {
+                                stringResource(R.string.main_view_today_day, dailyItem.dayName)
+                            } else {
+                                dailyItem.dayName
+                            }
+
+                            DailyWeatherItemCard(
+                                dayName = dayNameText,
+                                icon = dailyItem.weatherType.iconRes,
+                                minTemperature = "${dailyItem.minTemperature.toInt()}°",
+                                maxTemperature = "${dailyItem.maxTemperature.toInt()}°"
+                            )
+                        }
                     }
                 }
             }
@@ -213,11 +247,13 @@ private fun MainViewHeader(
         Texts.TitleLarge(
             text = uiState.cityName, fontFamily = TechMonoFontFamily,
         )
+        VerticalSpacer(Dimens.SpacingTiny)
         Texts.TitleSmall(
             text = uiState.countryName,
             isSecondary = true,
             fontFamily = TechMonoFontFamily
         )
+
         VerticalSpacer(Dimens.SpacingLarge)
 
         Row(
@@ -247,7 +283,7 @@ private fun MainViewHeader(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val backgroundRes =
-                    weatherType?.backgroundRes ?: WeatDotDrawables.Backgrounds.Thunderstorm
+                    weatherType?.backgroundRes ?: AppDrawables.Backgrounds.Thunderstorm
                 val lottieComposition by rememberLottieComposition(
                     LottieCompositionSpec.RawRes(backgroundRes)
                 )
@@ -257,7 +293,7 @@ private fun MainViewHeader(
                     iterations = LottieConstants.IterateForever,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1.3f)
+                        .aspectRatio(1.4f)
                 )
 
                 VerticalSpacer(Dimens.SpacingTiny)
@@ -271,7 +307,7 @@ private fun MainViewHeader(
                             .padding(end = Dimens.SpacingTiny)
                             .size(Dimens.IconSizeNormal),
                         painter = painterResource(
-                            weatherType?.iconRes ?: WeatDotDrawables.Icons.ClearSky
+                            weatherType?.iconRes ?: AppDrawables.Icons.ClearSky
                         ),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface

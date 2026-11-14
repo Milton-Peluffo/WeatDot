@@ -1,7 +1,15 @@
 package com.tomildev.weatdot.core.domain.repository
 
 import com.tomildev.weatdot.core.domain.model.WeatherInfo
+import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
-    suspend fun getWeatherData(lat: Double, long: Double): Result<WeatherInfo>
+    fun getWeatherFlow(): Flow<WeatherInfo?>
+
+    suspend fun fetchAndCacheWeather(
+        lat: Double,
+        long: Double,
+        cityName: String,
+        countryName: String
+    ): Result<Unit>
 }
