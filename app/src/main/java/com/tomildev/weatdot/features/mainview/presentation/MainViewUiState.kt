@@ -8,4 +8,5 @@ data class MainViewUiState(
     val countryName: String = "Colombia",
     val isLoading: Boolean = false,
     val error: String? = null,
+    val lastWeatherUpdate: Long? = null
 )

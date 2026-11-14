@@ -106,6 +106,7 @@ fun WeatherEntity.toWeatherInfo(): WeatherInfo {
                 maxTemperature = entity.maxTemperature,
                 weatherType = WeatherType.fromWMO(entity.weatherCode)
             )
-        }
+        },
+        updatedAtTimestamp = updatedAtTimestamp
     )
 }

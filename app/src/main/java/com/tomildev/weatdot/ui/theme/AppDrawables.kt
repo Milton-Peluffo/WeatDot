@@ -8,6 +8,8 @@ object AppDrawables {
 
     object Icons {
         @DrawableRes
+        val Cloud = R.drawable.ic_cloud
+        val CloudOff = R.drawable.ic_cloud_off
         val Close = R.drawable.ic_close_outlined
         val Menu = R.drawable.ic_menu
 

@@ -102,13 +102,15 @@ fun MainViewContent(
     val scrollState = rememberScrollState()
     val screenState = rememberMainViewScreenState()
 
-
     AppScaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             AppTopBars.ButtonTopBar(
                 icon = AppDrawables.Icons.Menu,
-                onClick = { screenState.openMainViewPreferences() })
+                onClick = { screenState.openMainViewPreferences() },
+                trailingIcon = AppDrawables.Icons.Cloud,
+                onTrailingIconClick = {}
+            )
         }
     ) { innerPadding ->
         Column(
@@ -233,6 +235,7 @@ private fun MainViewHeader(
             isSecondary = true,
             fontFamily = TechMonoFontFamily
         )
+
         VerticalSpacer(Dimens.SpacingLarge)
 
         Row(

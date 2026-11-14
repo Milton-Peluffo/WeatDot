@@ -36,7 +36,7 @@ class MainViewViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         cityName = savedLocation.cityName,
-                        countryName = savedLocation.countryName
+                        countryName = savedLocation.countryName,
                     )
                 }
                 refreshWeatherData(
@@ -50,9 +50,11 @@ class MainViewViewModel @Inject constructor(
 
         viewModelScope.launch {
             appUseCases.getWeatherFlowUseCase().collect { weatherInfo ->
+
                 _uiState.update {
                     it.copy(
                         weatherInfo = weatherInfo,
+                        lastWeatherUpdate = weatherInfo?.updatedAtTimestamp,
                         isLoading = false
                     )
                 }
