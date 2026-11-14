@@ -129,7 +129,7 @@ class MainViewViewModel @Inject constructor(
                     )
                 }
             }
-            delay(2500L.milliseconds)
+            delay(1500L.milliseconds)
             result.onFailure { exception ->
                 _uiState.update {
                     it.copy(
@@ -138,7 +138,6 @@ class MainViewViewModel @Inject constructor(
                     )
                 }
             }
-            delay(2500L.milliseconds)
             _uiState.update { it.copy(statusMessageRes = null) }
         }
     }

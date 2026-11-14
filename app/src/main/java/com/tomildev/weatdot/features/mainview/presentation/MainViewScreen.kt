@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -45,9 +44,7 @@ import com.tomildev.weatdot.core.presentation.components.spacers.HorizontalSpace
 import com.tomildev.weatdot.core.presentation.components.spacers.VerticalSpacer
 import com.tomildev.weatdot.core.presentation.components.texts.SectionText
 import com.tomildev.weatdot.core.presentation.components.texts.Texts
-import com.tomildev.weatdot.core.presentation.components.topbars.AppTopBars
 import com.tomildev.weatdot.core.util.TimeFormatter
-import com.tomildev.weatdot.features.mainview.preferences.app_preferences.AppPreferencesBottomSheet
 import com.tomildev.weatdot.features.mainview.presentation.components.WeatherDataContainer
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.DailyWeatherItemCard
 import com.tomildev.weatdot.features.mainview.presentation.components.cards.HourlyWeatherCard
@@ -57,7 +54,6 @@ import com.tomildev.weatdot.ui.theme.Dimens
 import com.tomildev.weatdot.ui.theme.NDotFontFamily
 import com.tomildev.weatdot.ui.theme.TechMonoFontFamily
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainViewScreen(
     modifier: Modifier = Modifier,
@@ -91,7 +87,6 @@ fun MainViewScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainViewContent(
     modifier: Modifier = Modifier,
@@ -102,18 +97,9 @@ fun MainViewContent(
     val context = LocalContext.current
     val systemFormat = TimeFormatter.getSystemTimeFormat(context)
     val scrollState = rememberScrollState()
-    val screenState = rememberMainViewScreenState()
 
     AppScaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = {
-            AppTopBars.ButtonTopBar(
-                icon = AppDrawables.Icons.Menu,
-                onClick = { screenState.openMainViewPreferences() },
-                trailingIcon = AppDrawables.Icons.Cloud,
-                onTrailingIconClick = { screenState.showLastWeatherUpdatedDialog() }
-            )
-        }
     ) { innerPadding ->
         PullToRefreshBox(
             modifier = Modifier
@@ -129,6 +115,7 @@ fun MainViewContent(
             ) {
                 if (uiState.statusMessageRes != null) {
                     uiState.statusMessageRes.let { messageRes ->
+                        VerticalSpacer(Dimens.SpacingMedium)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center
@@ -147,7 +134,6 @@ fun MainViewContent(
                             )
                         }
                     }
-
                 } else if (uiState.error != null) {
                     Texts.BodySmall(
                         text = uiState.statusMessageRes ?: "",
@@ -155,12 +141,11 @@ fun MainViewContent(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 }
-                VerticalSpacer(Dimens.SpacingSmall)
+                VerticalSpacer(Dimens.SpacingExtraLarge)
                 MainViewHeader(
                     uiState = uiState,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = Dimens.ScreenHorizontalPadding)
                         .graphicsLayer {
                             val scroll = scrollState.value
                             translationY = scroll * 0.65f
@@ -243,13 +228,6 @@ fun MainViewContent(
                     }
                 }
             }
-            when (val action = screenState.activeAction) {
-                is MainScreenAction.MainViewPreferences -> {
-                    AppPreferencesBottomSheet(onDismissRequest = {})
-                }
-
-                else -> {}
-            }
         }
     }
 }
@@ -269,6 +247,7 @@ private fun MainViewHeader(
         Texts.TitleLarge(
             text = uiState.cityName, fontFamily = TechMonoFontFamily,
         )
+        VerticalSpacer(Dimens.SpacingTiny)
         Texts.TitleSmall(
             text = uiState.countryName,
             isSecondary = true,
@@ -314,7 +293,7 @@ private fun MainViewHeader(
                     iterations = LottieConstants.IterateForever,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1.3f)
+                        .aspectRatio(1.4f)
                 )
 
                 VerticalSpacer(Dimens.SpacingTiny)
