@@ -2,17 +2,20 @@ package com.tomildev.weatdot.features.mainview.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tomildev.weatdot.R
 import com.tomildev.weatdot.core.data.local.preferences.LocationPreferences
 import com.tomildev.weatdot.core.data.remote.GeocodingApi
 import com.tomildev.weatdot.core.domain.location.LocationTracker
 import com.tomildev.weatdot.core.domain.use_case.AppUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class MainViewViewModel @Inject constructor(
@@ -26,11 +29,29 @@ class MainViewViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        observeSavedLocationAndRoomCache()
         fetchCurrentGpsLocation()
+        observeSavedLocationAndRoomCache()
     }
 
-    private fun observeSavedLocationAndRoomCache() {
+
+    fun onPullToRefresh() {
+        viewModelScope.launch {
+            fetchCurrentGpsLocation()
+            val currentLat = _uiState.value.weatherInfo?.currentWeather?.let {
+            }
+            locationPreferences.savedLocationFlow.collect { savedLocation ->
+                refreshWeatherData(
+                    lat = savedLocation.latitude,
+                    long = savedLocation.longitude,
+                    cityName = savedLocation.cityName,
+                    countryName = savedLocation.countryName
+                )
+                return@collect
+            }
+        }
+    }
+
+    fun observeSavedLocationAndRoomCache() {
         viewModelScope.launch {
             locationPreferences.savedLocationFlow.collect { savedLocation ->
                 _uiState.update {
@@ -55,7 +76,6 @@ class MainViewViewModel @Inject constructor(
                     it.copy(
                         weatherInfo = weatherInfo,
                         lastWeatherUpdate = weatherInfo?.updatedAtTimestamp,
-                        isLoading = false
                     )
                 }
             }
@@ -91,16 +111,35 @@ class MainViewViewModel @Inject constructor(
 
     fun refreshWeatherData(lat: Double, long: Double, cityName: String, countryName: String) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    statusMessageRes = R.string.main_view_message_updating
+                )
+            }
             val result = appUseCases.fetchWeatherUseCase(lat, long, cityName, countryName)
+            delay(1500L.milliseconds)
+            result.onSuccess {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = null,
+                        statusMessageRes = R.string.main_view_message_updated
+                    )
+                }
+            }
+            delay(2500L.milliseconds)
             result.onFailure { exception ->
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = exception.message ?: "Offline Mode"
+                        statusMessageRes = R.string.main_view_message_error
                     )
                 }
             }
+            delay(2500L.milliseconds)
+            _uiState.update { it.copy(statusMessageRes = null) }
         }
     }
 }

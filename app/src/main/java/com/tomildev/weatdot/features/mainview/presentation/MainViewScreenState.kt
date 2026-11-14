@@ -15,6 +15,7 @@ sealed interface MainScreenAction {
     object MainViewPreferences : MainScreenAction
 
     object ChangeLanguage : MainScreenAction
+    object WeatherSyncStatus : MainScreenAction
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,6 +26,10 @@ class MainViewScreenState(
     var activeAction by activeActionState
 
     // ============== INTERACTION FUNCTIONS ==============
+
+    fun showLastWeatherUpdatedDialog() {
+        activeAction = MainScreenAction.WeatherSyncStatus
+    }
 
     fun openMainViewPreferences() {
         activeAction = MainScreenAction.MainViewPreferences

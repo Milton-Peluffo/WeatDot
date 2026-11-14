@@ -16,9 +16,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -85,7 +87,7 @@ fun MainViewScreen(
     MainViewContent(
         modifier = modifier,
         uiState = uiState,
-        onRefresh = { }
+        onRefresh = { viewModel.onPullToRefresh() }
     )
 }
 
@@ -109,108 +111,145 @@ fun MainViewContent(
                 icon = AppDrawables.Icons.Menu,
                 onClick = { screenState.openMainViewPreferences() },
                 trailingIcon = AppDrawables.Icons.Cloud,
-                onTrailingIconClick = {}
+                onTrailingIconClick = { screenState.showLastWeatherUpdatedDialog() }
             )
         }
     ) { innerPadding ->
-        Column(
+        PullToRefreshBox(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .verticalScroll(scrollState)
+                .padding(innerPadding),
+            isRefreshing = uiState.isLoading,
+            onRefresh = { onRefresh() }
         ) {
-            MainViewHeader(
-                uiState = uiState,
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Dimens.ScreenHorizontalPadding)
-                    .graphicsLayer {
-                        val scroll = scrollState.value
-                        translationY = scroll * 0.65f
-                        val fadeDistance = size.height * 0.7f
-                        alpha = if (fadeDistance > 0f) {
-                            (1f - (scroll / fadeDistance)).coerceIn(0f, 1f)
-                        } else 1f
-                    }
-            )
-
-            WeatherDataContainer(
-                modifier = Modifier.padding(horizontal = Dimens.ScreenHorizontalPadding)
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    InformationCard(
-                        data = "${currentWeather?.humidity?.toInt() ?: "--"}",
-                        dataUnits = "%",
-                        dataDescription = stringResource(R.string.main_view_humidity)
-                    )
-                    InformationCard(
-                        data = "${currentWeather?.windSpeed ?: "--"}",
-                        dataUnits = "km/h",
-                        dataDescription = stringResource(R.string.main_view_wind_speed)
-                    )
-                    InformationCard(
-                        data = "${currentWeather?.pressure?.toInt() ?: "--"}",
-                        dataUnits = "hPa",
-                        dataDescription = stringResource(R.string.main_view_pressure)
-                    )
-                }
-
-                SectionText(text = stringResource(R.string.main_view_today_forecast))
-
-                val hourlyForecast = uiState.weatherInfo?.hourlyForecast ?: emptyList()
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
-                ) {
-                    items(
-                        items = hourlyForecast,
-                        key = { it.time }
-                    ) { hourlyItem ->
-                        val formattedTime = TimeFormatter.formatHour(hourlyItem.time, systemFormat)
-                        HourlyWeatherCard(
-                            hour = formattedTime.hour,
-                            period = formattedTime.period,
-                            temperature = "${hourlyItem.temperature.toInt()}°",
-                            icon = hourlyItem.weatherType.iconRes
-                        )
-                    }
-                }
-
-                SectionText(text = stringResource(R.string.main_view_seven_days_forecast))
-
-                val dailyForecast = uiState.weatherInfo?.dailyForecast ?: emptyList()
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
-                ) {
-                    dailyForecast.forEach { dailyItem ->
-                        val dayNameText = if (dailyItem.isToday) {
-                            stringResource(R.string.main_view_today_day, dailyItem.dayName)
-                        } else {
-                            dailyItem.dayName
+                if (uiState.statusMessageRes != null) {
+                    uiState.statusMessageRes.let { messageRes ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            if (uiState.isLoading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(Dimens.IconSizeTiny),
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    strokeWidth = Dimens.BorderNormal
+                                )
+                                HorizontalSpacer(Dimens.SpacingTiny)
+                            }
+                            Texts.BodySmall(
+                                text = stringResource(messageRes),
+                                isSecondary = true
+                            )
                         }
+                    }
 
-                        DailyWeatherItemCard(
-                            dayName = dayNameText,
-                            icon = dailyItem.weatherType.iconRes,
-                            minTemperature = "${dailyItem.minTemperature.toInt()}°",
-                            maxTemperature = "${dailyItem.maxTemperature.toInt()}°"
+                } else if (uiState.error != null) {
+                    Texts.BodySmall(
+                        text = uiState.statusMessageRes ?: "",
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+                VerticalSpacer(Dimens.SpacingSmall)
+                MainViewHeader(
+                    uiState = uiState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = Dimens.ScreenHorizontalPadding)
+                        .graphicsLayer {
+                            val scroll = scrollState.value
+                            translationY = scroll * 0.65f
+                            val fadeDistance = size.height * 0.7f
+                            alpha = if (fadeDistance > 0f) {
+                                (1f - (scroll / fadeDistance)).coerceIn(0f, 1f)
+                            } else 1f
+                        }
+                )
+
+                WeatherDataContainer(
+                    modifier = Modifier.padding(horizontal = Dimens.ScreenHorizontalPadding)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        InformationCard(
+                            data = "${currentWeather?.humidity?.toInt() ?: "--"}",
+                            dataUnits = "%",
+                            dataDescription = stringResource(R.string.main_view_humidity)
                         )
+                        InformationCard(
+                            data = "${currentWeather?.windSpeed ?: "--"}",
+                            dataUnits = "km/h",
+                            dataDescription = stringResource(R.string.main_view_wind_speed)
+                        )
+                        InformationCard(
+                            data = "${currentWeather?.pressure?.toInt() ?: "--"}",
+                            dataUnits = "hPa",
+                            dataDescription = stringResource(R.string.main_view_pressure)
+                        )
+                    }
+
+                    SectionText(text = stringResource(R.string.main_view_today_forecast))
+
+                    val hourlyForecast = uiState.weatherInfo?.hourlyForecast ?: emptyList()
+
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
+                    ) {
+                        items(
+                            items = hourlyForecast,
+                            key = { it.time }
+                        ) { hourlyItem ->
+                            val formattedTime =
+                                TimeFormatter.formatHour(hourlyItem.time, systemFormat)
+                            HourlyWeatherCard(
+                                hour = formattedTime.hour,
+                                period = formattedTime.period,
+                                temperature = "${hourlyItem.temperature.toInt()}°",
+                                icon = hourlyItem.weatherType.iconRes
+                            )
+                        }
+                    }
+
+                    SectionText(text = stringResource(R.string.main_view_seven_days_forecast))
+
+                    val dailyForecast = uiState.weatherInfo?.dailyForecast ?: emptyList()
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(Dimens.SpacingTiny),
+                    ) {
+                        dailyForecast.forEach { dailyItem ->
+                            val dayNameText = if (dailyItem.isToday) {
+                                stringResource(R.string.main_view_today_day, dailyItem.dayName)
+                            } else {
+                                dailyItem.dayName
+                            }
+
+                            DailyWeatherItemCard(
+                                dayName = dayNameText,
+                                icon = dailyItem.weatherType.iconRes,
+                                minTemperature = "${dailyItem.minTemperature.toInt()}°",
+                                maxTemperature = "${dailyItem.maxTemperature.toInt()}°"
+                            )
+                        }
                     }
                 }
             }
-        }
-        when (val action = screenState.activeAction) {
-            is MainScreenAction.MainViewPreferences -> {
-                AppPreferencesBottomSheet(onDismissRequest = {})
-            }
+            when (val action = screenState.activeAction) {
+                is MainScreenAction.MainViewPreferences -> {
+                    AppPreferencesBottomSheet(onDismissRequest = {})
+                }
 
-            else -> {}
+                else -> {}
+            }
         }
     }
 }
