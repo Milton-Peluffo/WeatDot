@@ -3,9 +3,6 @@ package com.tomildev.weatdot.features.mainview.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.weatdot.R
-import com.tomildev.weatdot.core.data.local.preferences.LocationPreferences
-import com.tomildev.weatdot.core.data.remote.GeocodingApi
-import com.tomildev.weatdot.core.domain.location.LocationTracker
 import com.tomildev.weatdot.core.domain.use_case.AppUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -20,9 +17,6 @@ import kotlin.time.Duration.Companion.milliseconds
 @HiltViewModel
 class MainViewViewModel @Inject constructor(
     private val appUseCases: AppUseCases,
-    private val locationTracker: LocationTracker,
-    private val locationPreferences: LocationPreferences,
-    private val geocodingApi: GeocodingApi
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainViewUiState())
@@ -37,9 +31,7 @@ class MainViewViewModel @Inject constructor(
     fun onPullToRefresh() {
         viewModelScope.launch {
             fetchCurrentGpsLocation()
-            val currentLat = _uiState.value.weatherInfo?.currentWeather?.let {
-            }
-            locationPreferences.savedLocationFlow.collect { savedLocation ->
+            appUseCases.getSavedLocationUseCase().collect { savedLocation ->
                 refreshWeatherData(
                     lat = savedLocation.latitude,
                     long = savedLocation.longitude,
@@ -53,7 +45,7 @@ class MainViewViewModel @Inject constructor(
 
     fun observeSavedLocationAndRoomCache() {
         viewModelScope.launch {
-            locationPreferences.savedLocationFlow.collect { savedLocation ->
+            appUseCases.getSavedLocationUseCase().collect { savedLocation ->
                 _uiState.update {
                     it.copy(
                         cityName = savedLocation.cityName,
@@ -71,7 +63,6 @@ class MainViewViewModel @Inject constructor(
 
         viewModelScope.launch {
             appUseCases.getWeatherFlowUseCase().collect { weatherInfo ->
-
                 _uiState.update {
                     it.copy(
                         weatherInfo = weatherInfo,
@@ -84,11 +75,11 @@ class MainViewViewModel @Inject constructor(
 
     fun fetchCurrentGpsLocation() {
         viewModelScope.launch {
-            val location = locationTracker.getCurrentLocation()
+            val location = appUseCases.getLocationUseCase()
             if (location != null) {
                 try {
                     val userLanguage = Locale.getDefault().language
-                    val geoDto = geocodingApi.getCityAndCountry(
+                    val geoDto = appUseCases.getCityAndCountryUseCase(
                         latitude = location.latitude,
                         longitude = location.longitude,
                         language = userLanguage
@@ -96,7 +87,7 @@ class MainViewViewModel @Inject constructor(
                     val cityName = geoDto.locality ?: geoDto.city ?: "Location"
                     val countryName = geoDto.countryName ?: ""
 
-                    locationPreferences.saveLocation(
+                    appUseCases.saveLocationUseCase(
                         latitude = location.latitude,
                         longitude = location.longitude,
                         cityName = cityName,
