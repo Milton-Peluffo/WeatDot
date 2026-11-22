@@ -8,10 +8,20 @@ import com.tomildev.weatdot.core.data.dto.WeatherResponseDto
 import com.tomildev.weatdot.core.data.local.database.entity.DailyWeatherEntity
 import com.tomildev.weatdot.core.data.local.database.entity.HourlyWeatherEntity
 import com.tomildev.weatdot.core.data.local.database.entity.WeatherEntity
+import com.tomildev.weatdot.core.domain.model.WeatherInfo
 import com.tomildev.weatdot.core.domain.model.WeatherType
 import org.junit.Test
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
+/**
+ * Unit test suite for [WeatherMapper] extension functions.
+ *
+ * Verifies:
+ * - Mapping from network DTOs ([WeatherResponseDto]) to database entities ([WeatherEntity]).
+ * - Mapping from database entities ([WeatherEntity]) to domain UI models ([WeatherInfo]).
+ * - Business logic filtering that ensures hourly forecast items only contain items from the current day.
+ */
 
 class WeatherMapperTest {
 
