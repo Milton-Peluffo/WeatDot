@@ -14,6 +14,14 @@ import java.util.Locale
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
+/**
+ * ViewModel managing UI state and user interactions for the main weather screen.
+ *
+ * Connects domain use cases ([AppUseCases]) with [MainViewUiState] via [StateFlow],
+ * handling pull-to-refresh gestures, GPS location updates, and reactive offline-first weather data.
+ *
+ * @property appUseCases Container for all domain business logic use cases.
+ */
 @HiltViewModel
 class MainViewViewModel @Inject constructor(
     private val appUseCases: AppUseCases,
