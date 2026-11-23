@@ -1,17 +1,17 @@
 package com.tomildev.weatdot.core.domain.use_case
 
-import com.tomildev.weatdot.core.data.dto.ReverseGeocodingDto
-import com.tomildev.weatdot.core.data.remote.GeocodingApi
+import com.tomildev.weatdot.core.domain.model.UserLocation
+import com.tomildev.weatdot.core.domain.repository.LocationRepository
 import javax.inject.Inject
 
 class GetCityAndCountryUseCase @Inject constructor(
-    private val geocodingApi: GeocodingApi
+    private val repository: LocationRepository
 ) {
     suspend operator fun invoke(
         latitude: Double,
         longitude: Double,
         language: String
-    ): ReverseGeocodingDto {
-        return geocodingApi.getCityAndCountry(latitude, longitude, language)
+    ): UserLocation {
+        return repository.getCityAndCountry(latitude, longitude, language)
     }
 }

@@ -3,7 +3,9 @@ package com.tomildev.weatdot.core.di
 import com.tomildev.weatdot.core.data.remote.ApiConstants
 import com.tomildev.weatdot.core.data.remote.GeocodingApi
 import com.tomildev.weatdot.core.data.remote.WeatherApi
+import com.tomildev.weatdot.core.data.repository.LocationRepositoryImpl
 import com.tomildev.weatdot.core.data.repository.WeatherRepositoryImpl
+import com.tomildev.weatdot.core.domain.repository.LocationRepository
 import com.tomildev.weatdot.core.domain.repository.WeatherRepository
 import dagger.Binds
 import dagger.Module
@@ -17,6 +19,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AppModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindLocationRepository(
+        locationRepositoryImpl: LocationRepositoryImpl
+    ): LocationRepository
 
     @Binds
     @Singleton

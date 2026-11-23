@@ -79,20 +79,13 @@ class MainViewViewModel @Inject constructor(
             if (location != null) {
                 try {
                     val userLanguage = Locale.getDefault().language
-                    val geoDto = appUseCases.getCityAndCountryUseCase(
+
+                    val userLocation = appUseCases.getCityAndCountryUseCase(
                         latitude = location.latitude,
                         longitude = location.longitude,
                         language = userLanguage
                     )
-                    val cityName = geoDto.locality ?: geoDto.city ?: "Location"
-                    val countryName = geoDto.countryName ?: ""
-
-                    appUseCases.saveLocationUseCase(
-                        latitude = location.latitude,
-                        longitude = location.longitude,
-                        cityName = cityName,
-                        countryName = countryName
-                    )
+                    appUseCases.saveLocationUseCase(userLocation)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -121,7 +114,7 @@ class MainViewViewModel @Inject constructor(
                 }
             }
             delay(1500L.milliseconds)
-            result.onFailure { exception ->
+            result.onFailure {
                 _uiState.update {
                     it.copy(
                         isLoading = false,

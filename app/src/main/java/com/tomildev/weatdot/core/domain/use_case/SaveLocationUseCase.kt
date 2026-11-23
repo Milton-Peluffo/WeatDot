@@ -1,17 +1,13 @@
 package com.tomildev.weatdot.core.domain.use_case
 
-import com.tomildev.weatdot.core.data.local.preferences.LocationPreferences
+import com.tomildev.weatdot.core.domain.model.UserLocation
+import com.tomildev.weatdot.core.domain.repository.LocationRepository
 import javax.inject.Inject
 
 class SaveLocationUseCase @Inject constructor(
-    private val locationPreferences: LocationPreferences
+    private val repository: LocationRepository
 ) {
-    suspend operator fun invoke(
-        latitude: Double,
-        longitude: Double,
-        cityName: String,
-        countryName: String
-    ) {
-        locationPreferences.saveLocation(latitude, longitude, cityName, countryName)
+    suspend operator fun invoke(location: UserLocation) {
+        repository.saveLocation(location)
     }
 }
