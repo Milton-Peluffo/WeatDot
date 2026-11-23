@@ -3,16 +3,17 @@ package com.tomildev.weatdot.features.mainview.presentation
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.tomildev.weatdot.R
-import com.tomildev.weatdot.core.data.local.preferences.LocationPreferences
-import com.tomildev.weatdot.core.data.local.preferences.SavedLocation
-import com.tomildev.weatdot.core.data.remote.GeocodingApi
-import com.tomildev.weatdot.core.domain.location.LocationTracker
 import com.tomildev.weatdot.core.domain.model.CurrentWeather
+import com.tomildev.weatdot.core.domain.model.UserLocation
 import com.tomildev.weatdot.core.domain.model.WeatherInfo
 import com.tomildev.weatdot.core.domain.model.WeatherType
 import com.tomildev.weatdot.core.domain.use_case.AppUseCases
 import com.tomildev.weatdot.core.domain.use_case.FetchWeatherUseCase
+import com.tomildev.weatdot.core.domain.use_case.GetCityAndCountryUseCase
+import com.tomildev.weatdot.core.domain.use_case.GetLocationUseCase
+import com.tomildev.weatdot.core.domain.use_case.GetSavedLocationUseCase
 import com.tomildev.weatdot.core.domain.use_case.GetWeatherFlowUseCase
+import com.tomildev.weatdot.core.domain.use_case.SaveLocationUseCase
 import com.tomildev.weatdot.util.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.every
@@ -36,16 +37,18 @@ class MainViewViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    // Use case mocks
     private val getWeatherFlowUseCase: GetWeatherFlowUseCase = mockk()
     private val fetchWeatherUseCase: FetchWeatherUseCase = mockk()
-    private val locationTracker: LocationTracker = mockk()
-    private val locationPreferences: LocationPreferences = mockk()
-    private val geocodingApi: GeocodingApi = mockk()
+    private val getLocationUseCase: GetLocationUseCase = mockk()
+    private val getCityAndCountryUseCase: GetCityAndCountryUseCase = mockk()
+    private val getSavedLocationUseCase: GetSavedLocationUseCase = mockk()
+    private val saveLocationUseCase: SaveLocationUseCase = mockk()
 
     private lateinit var appUseCases: AppUseCases
     private lateinit var viewModel: MainViewViewModel
 
-    private val fakeSavedLocation = SavedLocation(
+    private val fakeUserLocation = UserLocation(
         latitude = 40.4168,
         longitude = -3.7038,
         cityName = "Madrid",
@@ -67,25 +70,25 @@ class MainViewViewModelTest {
     fun setUp() {
         appUseCases = AppUseCases(
             getWeatherFlowUseCase = getWeatherFlowUseCase,
-            fetchWeatherUseCase = fetchWeatherUseCase
+            fetchWeatherUseCase = fetchWeatherUseCase,
+            getLocationUseCase = getLocationUseCase,
+            getCityAndCountryUseCase = getCityAndCountryUseCase,
+            getSavedLocationUseCase = getSavedLocationUseCase,
+            saveLocationUseCase = saveLocationUseCase
         )
 
-        every { locationPreferences.savedLocationFlow } returns flowOf(fakeSavedLocation)
+        // default return values for use cases
+        every { getSavedLocationUseCase() } returns flowOf(fakeUserLocation)
         every { getWeatherFlowUseCase() } returns flowOf(fakeWeatherInfo)
-        coEvery { locationTracker.getCurrentLocation() } returns null
-        coEvery {
-            fetchWeatherUseCase(any(), any(), any(), any())
-        } returns Result.success(Unit)
+        coEvery { getLocationUseCase() } returns null
+        coEvery { getCityAndCountryUseCase(any(), any(), any()) } returns fakeUserLocation
+        coEvery { saveLocationUseCase(any()) } returns Unit
+        coEvery { fetchWeatherUseCase(any(), any(), any(), any()) } returns Result.success(Unit)
     }
 
     @Test
     fun `init collects saved location and Room cache updating uiState correctly`() = runTest {
-        viewModel = MainViewViewModel(
-            appUseCases = appUseCases,
-            locationTracker = locationTracker,
-            locationPreferences = locationPreferences,
-            geocodingApi = geocodingApi
-        )
+        viewModel = MainViewViewModel(appUseCases = appUseCases)
 
         viewModel.uiState.test {
             val state = awaitItem()
@@ -97,14 +100,9 @@ class MainViewViewModelTest {
 
     @Test
     fun `refreshWeatherData emits updating status and then success status`() = runTest {
-        every { locationPreferences.savedLocationFlow } returns emptyFlow()
+        every { getSavedLocationUseCase() } returns emptyFlow()
 
-        viewModel = MainViewViewModel(
-            appUseCases = appUseCases,
-            locationTracker = locationTracker,
-            locationPreferences = locationPreferences,
-            geocodingApi = geocodingApi
-        )
+        viewModel = MainViewViewModel(appUseCases = appUseCases)
 
         viewModel.uiState.test {
             val initialState = awaitItem()
