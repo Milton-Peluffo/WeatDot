@@ -10,7 +10,7 @@
 ![Min SDK](https://img.shields.io/badge/minSdk-26-informational?style=flat)
 ![Licencia](https://img.shields.io/badge/licencia-source--available-lightgrey?style=flat)
 
-[Capturas](#capturas) · [Arquitectura](#arquitectura) · [Ejecutar](#cómo-ejecutarlo) · [Pruebas](#pruebas) · [Licencia](#licencia)
+[Capturas](#capturas) · [Arquitectura](#arquitectura) · [Ejecutar](#como-ejecutarlo) · [Pruebas](#pruebas) · [Licencia](#licencia)
 
 </div>
 
@@ -19,9 +19,9 @@
 ## Capturas
 
 <div align="center">
-  <img src="docs/images/weatDotFrames.png" alt="Pantalla principal de WeatDot en tema claro y oscuro" width="100%">
+  <img src="docs/images/weatdot-frames.png" width="100%">
   <br><br>
-  <img src="docs/images/weatDotShowcase.gif" alt="Demostración de WeatDot: pull-to-refresh y animaciones del clima" width="500">
+  <img src="docs/images/weatdot-animated-frame.gif" width="500">
 </div>
 
 ---
@@ -31,7 +31,7 @@
 - Clima actual: temperatura, humedad, viento y presión.
 - Pronóstico por hora del día y pronóstico diario.
 - Ubicación por GPS con geocodificación inversa (ciudad y país en el idioma del dispositivo).
-- Persistencia de la última ubicación con DataStore, con respaldo si no hay GPS ni permisos.
+- Persistencia de la última ubicación con DataStore, con respaldo si no hay GPS ni permisos (Londres por defecto).
 - Caché local con Room: la app sigue mostrando datos sin conexión.
 - Actualización con pull-to-refresh.
 - Animaciones de clima con Lottie.
@@ -72,7 +72,7 @@ El detalle completo (casos de uso, repositorios y módulos de Hilt) está en el 
 | :-- | :-- |
 | **Room como fuente de datos de la UI** | La pantalla solo observa la base local. La red únicamente escribe en Room, así la UI no depende de la conexión y los datos siguen disponibles sin internet. |
 | **Interfaces en Domain, implementaciones en Data** | Los casos de uso y el ViewModel no dependen de Retrofit, Room ni DataStore. Se pueden cambiar o simular en tests. |
-| **`AppUseCases` como fachada** | El ViewModel recibe una sola dependencia en vez de seis, y los tests son más simples. |
+| **`AppUseCases` como fachada** | El ViewModel recibe una sola fachada en vez de inyectar múltiples casos de uso por separado, y los tests son más simples. |
 | **MVVM con UDF** | Estado inmutable con `copy`, un único `StateFlow` y eventos hacia abajo. Para una sola pantalla, evitar intents y reducers mantiene el código simple. |
 | **Mappers explícitos (DTO, Entity, Domain)** | Cada capa tiene su propio modelo, así un cambio en la API no se propaga hasta la UI. |
 | **Pantalla stateful y contenido stateless** | `MainViewScreen` maneja estado y permisos; `MainViewContent` solo dibuja, lo que facilita previews y pruebas. |
@@ -122,13 +122,12 @@ app/src/main/java/com/tomildev/weatdot/
 
 ---
 
-## Cómo ejecutarlo
+<h2 id="como-ejecutarlo">Cómo ejecutarlo</h2>
 
 **Requisitos:** Android Studio reciente y un dispositivo o emulador con Android 8.0 (API 26) o superior.
 
 ```bash
 git clone https://github.com/Milton-Peluffo/WeatDot.git
-cd WeatDot
 ```
 
 1. Abre la carpeta en Android Studio y espera a que Gradle sincronice.
@@ -139,9 +138,9 @@ Open-Meteo y BigDataCloud se consumen sin autenticación, así que no hace falta
 
 Por terminal en Windows, usa `gradlew.bat`:
 
-```bash
-./gradlew assembleDebug    # compilar
-./gradlew installDebug     # instalar en un dispositivo conectado
+```powershell
+.\gradlew.bat assembleDebug    # compilar
+.\gradlew.bat installDebug     # instalar en un dispositivo conectado
 ```
 
 ---
