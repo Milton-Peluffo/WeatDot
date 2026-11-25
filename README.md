@@ -5,13 +5,18 @@
 # WeatDot
 
 
-**Aplicación de clima para Android con Clean Architecture, Jetpack Compose y Room como fuente de datos de la UI.**
+WeatDot es una app meteorológica moderna para Android que muestra el clima actual y los pronósticos de una forma clara, rápida y visual.
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=flat&logo=jetpackcompose&logoColor=white)
+![MVVM](https://img.shields.io/badge/MVVM-512BD4?style=flat&logo=architecture&logoColor=white)
+![Clean Architecture](https://img.shields.io/badge/Clean%20Architecture-02569B?style=flat&logo=cleanarchitecture&logoColor=white)
 ![Hilt](https://img.shields.io/badge/Hilt-3DDC84?style=flat&logo=android&logoColor=white)
-![Min SDK](https://img.shields.io/badge/minSdk-26-informational?style=flat)
-![Licencia](https://img.shields.io/badge/licencia-source--available-lightgrey?style=flat)
+![Room](https://img.shields.io/badge/Room-8A2BE2?style=flat&logo=sqlite&logoColor=white)
+![Retrofit](https://img.shields.io/badge/Retrofit-48B983?style=flat&logo=square&logoColor=white)
+![Gson](https://img.shields.io/badge/Gson-FF6F00?style=flat&logo=json&logoColor=white)
+![DataStore](https://img.shields.io/badge/DataStore-4285F4)
+![Fused Location](https://img.shields.io/badge/Play%20Services%20Fused%20Location-4285F4?style=flat&logo=googlemaps&logoColor=white)
 
 [Capturas](#capturas) · [Arquitectura](#arquitectura) · [Ejecutar](#como-ejecutarlo) · [Pruebas](#pruebas) · [Licencia](#licencia)
 
