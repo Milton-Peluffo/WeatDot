@@ -169,7 +169,7 @@ WeatDot es **código disponible: source-available**, no software de código abie
 | Modificarla en tu copia o fork, con fines personales, educativos o de investigación | Vender o monetizar la app o sus derivados (anuncios, compras, suscripciones) |
 | Revisar el código con fines de evaluación profesional | Usarla en un producto o servicio comercial, o presentarla como obra propia |
 
-El texto completo está en [LICENSE](LICENSE). Las librerías, animaciones, íconos y servicios de terceros se rigen por sus propias licencias.
+El texto completo está en [LICENSE](LICENSE). Las librerías y servicios de terceros se rigen por sus propias licencias.
 
 ---
 
