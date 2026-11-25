@@ -1,6 +1,10 @@
 <div align="center">
 
-<div align="center"> <h1 align="center"> <img src="docs/images/weatdot-icon.png" alt="Icono de WeatDot" height="86" align="absmiddle"> WeatDot </h1>
+ <img src="docs/images/weatdot-icon.png" width="15%">
+
+# WeatDot
+
+
 **Aplicación de clima para Android con Clean Architecture, Jetpack Compose y Room como fuente de datos de la UI.**
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white)
