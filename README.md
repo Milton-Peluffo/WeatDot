@@ -1,6 +1,9 @@
 <div align="center">
 
+ <img src="docs/images/weatdot-icon.png" width="15%">
+
 # WeatDot
+
 
 **Aplicación de clima para Android con Clean Architecture, Jetpack Compose y Room como fuente de datos de la UI.**
 
